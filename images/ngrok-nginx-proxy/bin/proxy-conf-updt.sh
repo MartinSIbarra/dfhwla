@@ -4,7 +4,8 @@ set -o pipefail
 # Hace source de las variables de entorno
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
-nginx_config_file="/etc/nginx/http.d/ngrok-proxy.conf"
+nginx_config_path="/etc/nginx/http.d/"
+nginx_config_file="$CONFIG_PATH/ngrok-proxy.conf"
 
 main_template_file="$TEMPLATES_PATH/main.conf"
 location_template=$(<"$TEMPLATES_PATH/location.conf")
@@ -50,11 +51,11 @@ final_config=$(echo "$final_config" | sed "s|<listen_port>|$listen_port|g")
 if [ "$TEST" != "true" ]; then
     if [ ! -s "$nginx_config_file" ] || ! diff -q <(echo "$final_config") "$nginx_config_file" >/dev/null; then
         echo "$final_config" > "$nginx_config_file"
+        ln -s "$nginx_config_file" "$nginx_config_path"
         nginx -s reload
         for message in "${messages[@]}"; do
             log "$message"
         done
         log "Updated nginx configuration with new proxy settings."
-        ln -s "$nginx_config_file" "$CONFIG_PATH"
     fi
 fi

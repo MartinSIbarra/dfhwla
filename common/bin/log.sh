@@ -30,7 +30,7 @@ log() {
 
         echo "[$( date '+%Y-%m-%d %H:%M:%S' )][$caller]: $message" >> "$log_file"
 
-        local files=($(ls -1 "$LOG_PATH"/*.log 2>/dev/null | sort))
+        local files=($(ls -1 "$LOG_PATH"/*-"$hostname".log 2>/dev/null | sort))
 
         local total_files=${#files[@]}
 
