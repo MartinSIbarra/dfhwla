@@ -4,8 +4,8 @@ FROM alpine:latest
 COPY ./scripts/entrypoint.sh \ 
     ./scripts/vpn-server-init.sh \
     ./scripts/ssh-init.sh \
-    ./common/scripts/validate-params \
-    ./common/scripts/log \
+    ./scripts/validate-params \
+    ./scripts/log \
     /usr/local/bin/
 
 # Agrega templates al contenedor
