@@ -3,7 +3,7 @@ log() {
     local message="$1"
 
     if [ ! -z "$message" ]; then
-        local caller=${BASH_SOURCE[1]}
+        local caller=$(basename "${BASH_SOURCE[1]}")
 
         local log_max_file_size=$(jq -r '.log.max_file_size' "$PARAMS_FILE")
         [ -z "$log_max_file_size" ] && log_max_file_size=10000  # Default to 10000 lines if not set

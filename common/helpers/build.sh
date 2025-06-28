@@ -21,7 +21,7 @@ if [ -d "$image_scripts_path" ]; then
 fi
 
 docker rmi -f "$image_name:$image_tag" 2>/dev/null || true
-docker build -t "$image_name:$image_tag" "$image_path"
+docker build --no-cache -t "$image_name:$image_tag" "$image_path"
 
 if [ -d "$image_scripts_path" ]; then
     for script in "${common_scripts[@]}"; do

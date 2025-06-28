@@ -1,14 +1,13 @@
 #!/bin/bash
 set -o pipefail
 
-[ -z "$1" ] && root_path="$HOME" || root_path="$1"
+# Hace source de las variables de entorno
+[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
-config_path="$root_path/config"
 nginx_config_file="/etc/nginx/http.d/ngrok-proxy.conf"
 
-templates_path="$root_path/templates"
-main_template_file="$templates_path/main.conf"
-location_template=$(<"$templates_path/location.conf")
+main_template_file="$TEMPLATES_PATH/main.conf"
+location_template=$(<"$TEMPLATES_PATH/location.conf")
 
 apps=$(jq -c '.proxy.apps[]' "$PARAMS_FILE")
 error_messages=()
@@ -48,7 +47,7 @@ final_config=$(sed '/<locations>/{
 final_config=$(echo "$final_config" | sed "s|<listen_port>|$listen_port|g")
 
 # Compara con el archivo real, solo escribe si cambió
-if [ == "$HOME" ]; then
+if [ "$TEST" != "true" ]; then
     if [ ! -s "$nginx_config_file" ] || ! diff -q <(echo "$final_config") "$nginx_config_file" >/dev/null; then
         echo "$final_config" > "$nginx_config_file"
         nginx -s reload
@@ -56,5 +55,6 @@ if [ == "$HOME" ]; then
             log "$message"
         done
         log "Updated nginx configuration with new proxy settings."
+        ln -s "$nginx_config_file" "$CONFIG_PATH"
     fi
 fi
