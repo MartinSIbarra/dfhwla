@@ -1,0 +1,9 @@
+#!/bin/bash
+
+[ -z "$1" ] && root_path="$HOME" || root_path="$1"
+
+# Verifica si el archivo de parametros existe y tiene contenido si no existe termina la ejecucion
+if [ ! -s "$PARAMS_FILE" ]; then
+    log "$root_path" " Params file not found, please add to \"$PARAMS_FILE\"." "$0"
+    exit 0
+fi

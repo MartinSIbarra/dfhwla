@@ -1,0 +1,9 @@
+*
+!.gitignore
+!*images
+!images/**
+!*scripts
+!scripts/**
+!*common
+!common/**
+!README.md

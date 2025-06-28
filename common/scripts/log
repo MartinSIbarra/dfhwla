@@ -1,0 +1,43 @@
+#!/bin/bash
+
+root_path="$1"
+[ -z "$root_path" ] && root_path="$HOME"
+message="$2"
+
+if [ ! -z "$message" ]; then
+    [ -z "$3" ] && sender="*" || sender="$(basename $3)"
+    
+    max_log_size=3
+    max_log_files=5
+
+    log_path="$root_path/logs"
+
+    [ -d "$log_path" ] || mkdir -p "$log_path"
+
+    [ -z "$log_file" ] && log_file="$log_path/$( date '+%Y-%m-%d-%H-%M-%S-%3N' )-$( cat /etc/hostname ).log"
+
+    if [ -f "$log_file" ]; then
+        log_size=$(wc -l < "$log_file")
+
+        if [ "$log_size" -ge "$max_log_size" ]; then
+            log_file="$log_path/$( date '+%Y-%m-%d-%H-%M-%S-%3N' )-$( cat /etc/hostname ).log"
+        fi
+    else
+        touch "$log_file"
+        chown "1000:1000" "$log_file"
+        chown "1000:1000" "$log_path"
+    fi
+
+    echo "[$( date '+%Y-%m-%d %H:%M:%S.%3N' )] $sender: $message" >> "$log_file"
+
+    files=($(ls -1 "$log_path"/*.log 2>/dev/null | sort))
+
+    total_files=${#files[@]}
+
+    if [ "$total_files" -gt "$max_log_files" ]; then
+        files_to_delete=$((total_files - max_log_size))
+        for ((i = 0; i < files_to_delete; i++)); do
+            rm -f "${files[$i]}"
+        done
+    fi
+fi
