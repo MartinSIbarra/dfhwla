@@ -10,9 +10,9 @@ image_tag=$2
 [ -z "$image_name" ] && { echo "Image name is required"; exit 1; }
 [ -z "$image_tag" ] && { echo "Image tag is required"; exit 1; }
 
-common_scripts=(./common/scripts/*) 
+common_scripts=(./common/bin/*) 
 image_path="./images/$image_name"
-image_scripts_path="$image_path/scripts"
+image_scripts_path="$image_path/bin"
 
 if [ -d "$image_scripts_path" ]; then
     for script in "${common_scripts[@]}"; do

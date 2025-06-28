@@ -15,7 +15,7 @@ error_messages=()
 listen_port=$(jq -r '.proxy.listen_port' "$PARAMS_FILE") && [ -n "$listen_port" ] || error_messages+=("proxy.listen_port is not set in $PARAMS_FILE")
 if [ ${#error_messages[@]} -ne 0 ]; then
     for message in "${error_messages[@]}"; do
-        log "$root_path" "Error: $message"
+        log "Error: $message"
     done
     exit 1
 fi
@@ -48,13 +48,13 @@ final_config=$(sed '/<locations>/{
 final_config=$(echo "$final_config" | sed "s|<listen_port>|$listen_port|g")
 
 # Compara con el archivo real, solo escribe si cambió
-if [ "$root_path" == "$HOME" ]; then
+if [ == "$HOME" ]; then
     if [ ! -s "$nginx_config_file" ] || ! diff -q <(echo "$final_config") "$nginx_config_file" >/dev/null; then
         echo "$final_config" > "$nginx_config_file"
         nginx -s reload
         for message in "${messages[@]}"; do
-            log "$root_path" "$message" "$0"
+            log "$message"
         done
-        log "$root_path" "Updated nginx configuration with new proxy settings." "$0"
+        log "Updated nginx configuration with new proxy settings."
     fi
 fi

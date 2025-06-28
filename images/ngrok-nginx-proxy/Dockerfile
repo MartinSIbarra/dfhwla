@@ -1,11 +1,11 @@
 FROM alpine:latest
 
 # Agrega scripts al contenedor
-COPY ./scripts/ngrok-start.sh \
-    ./scripts/proxy-conf-updt.sh \
-    ./scripts/entrypoint.sh \
-    ./scripts/validate-params \
-    ./scripts/log \
+COPY ./bin/ngrok-start.sh \
+    ./bin/proxy-conf-updt.sh \
+    ./bin/entrypoint.sh \
+    ./bin/validate-params \
+    ./bin/log \
     /usr/local/bin/
 
 # Agrega templates al contenedor
