@@ -5,7 +5,7 @@ set -o pipefail
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
 # Se valida el archivo de parametros
-$COMMONS_BIN_PATH/validate_params
+$COMMONS_BIN_PATH/validate_params.sh
 
 # Ejecuta nginx en segundo plano
 log "Starting nginx server in background..."

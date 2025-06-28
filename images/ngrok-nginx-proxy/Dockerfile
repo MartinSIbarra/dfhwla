@@ -4,8 +4,9 @@ FROM alpine:latest
 COPY ./bin/ngrok-start.sh \
     ./bin/proxy-conf-updt.sh \
     ./bin/entrypoint.sh \
-    ./bin/validate-params \
-    ./bin/log \
+    ./bin/validate-params.sh \
+    ./bin/log.sh \
+    ./bin/env.sh \
     /usr/local/bin/
 
 # Agrega templates al contenedor
@@ -24,8 +25,9 @@ RUN apk update \
     && chmod +x /usr/local/bin/ngrok-start.sh \
     && chmod +x /usr/local/bin/proxy-conf-updt.sh \
     && chmod +x /usr/local/bin/entrypoint.sh \
-    && chmod +x /usr/local/bin/validate-params \
-    && chmod +x /usr/local/bin/log \
+    && chmod +x /usr/local/bin/validate-params.sh \
+    && chmod +x /usr/local/bin/log.sh \
+    && chmod +x /usr/local/bin/env.sh \
     # Agrega alias para facilitar el uso
     && echo "alias a='ls -la --color --group-directories-first'" >> /root/.bashrc
 
