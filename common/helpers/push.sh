@@ -1,10 +1,13 @@
 #!/bin/bash
 set -e
 
-docker_hub_user=$(cat ./common/helpers/docker.hub.user.name)
+docker_hub_user=$(cat ./common/helpers/docker.hub.user.name) \
+    || { echo "./common/helpers/docker.hub.user.name must exists."; exit 1; }
 image_name=$1
 image_tag=$2
 
+[ -z "$docker_hub_user" ] \
+    && { echo "Docker Hub user (or some name) is required into \"./common/helpers/docker.hub.user.name\""; exit 1; }
 [ -z "$image_name" ] && { echo "Image name is required"; exit 1; }
 [ -z "$image_tag" ] && { echo "Image tag is required"; exit 1; }
 
