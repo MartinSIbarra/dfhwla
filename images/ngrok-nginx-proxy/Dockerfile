@@ -4,8 +4,8 @@ FROM alpine:latest
 COPY ./scripts/ngrok-start.sh \
     ./scripts/proxy-conf-updt.sh \
     ./scripts/entrypoint.sh \
-    ../../common/scripts/validate-params \
-    ../../common/scripts/log \
+    ./scripts/validate-params \
+    ./scripts/log \
     /usr/local/bin/
 
 # Agrega templates al contenedor

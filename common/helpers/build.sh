@@ -1,15 +1,27 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-image_path=$1
-image_name=$2
+image_name=$1
+image_tag=$2
 
+[ -z "$image_name" ] && { echo "Image name is required"; exit 1; }
+[ -z "$image_tag" ] && { echo "Image tag is required"; exit 1; }
 
-files=()
-for file in "../../common/scripts/*"; do
-    cp "$file" ./scripts/
-    files+=("$file")
-done
+common_scripts=(./common/scripts/*)
+image_path="./images/$image_name"
+image_scripts_path="$image_path/scripts"
 
-docker rmi -f "$image_name" || true
-docker build -t "$image_name" "$image_path"
+if [ ! -d "$image_scripts_path" ]; then
+    for script in "${common_scripts[@]}"; do
+        cp "$script" "$image_scripts_path/"
+    done
+fi
+
+docker rmi -f "$image_name:$image_tag" 2>/dev/null || true
+docker build -t "$image_name:$image_tag" "$image_path"
+
+if [ ! -d "$image_scripts_path" ]; then
+    for script in "${common_scripts[@]}"; do
+        rm "$image_scripts_path/$script"
+    done
+fi
