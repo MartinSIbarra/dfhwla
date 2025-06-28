@@ -11,7 +11,7 @@ templates_path="$root_path/templates"
 wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
 
 # Se obtienen los parametros del archivo de configuracion
-log "$root_path" "Loading parameters from "$PARAMS_FILE"" "$0"
+log "$root_path" "Loading parameters from $PARAMS_FILE..."
 vpn_server_url=$(jq -r '.vpn.server_url' "$PARAMS_FILE")
 vpn_port=$(jq -r '.vpn.port' "$PARAMS_FILE")
 vpn_ipv4_net=$(jq -r '.vpn.ipv4_net' "$PARAMS_FILE")
@@ -51,7 +51,7 @@ else
     start=$((cant_vpnkeys + 1))
 
     if [ "$start" -gt "$vpn_peers_quantity" ]; then
-        log "$root_path" "Required peers quantity ($vpn_peers_quantity) already reached with $cant_vpnkeys keys." "$0"
+        log "$root_path" "Required peers quantity ($vpn_peers_quantity) already reached with $cant_vpnkeys keys."
     else
         generate_vpnkey_list "$start" "$vpn_peers_quantity" "$vpnkeys_list_file" "$vpn_ipv4_mask"
     fi
@@ -104,4 +104,4 @@ done
 
 wg-quick up "$vpn_interface"
 
-log "$root_path" "WireGuard VPN server started successfully." "$0"
+log "$root_path" "WireGuard VPN server started successfully."

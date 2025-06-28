@@ -5,10 +5,12 @@ root_path="$1"
 message="$2"
 
 if [ ! -z "$message" ]; then
-    [ -z "$3" ] && sender="*" || sender="$(basename $3)"
-    
-    max_log_size=3
-    max_quantity_files=5
+    caller=${BASH_SOURCE[1]}
+
+    log_max_file_size=$(jq -r '.proxy.log.max_file_size' "$PARAMS_FILE")
+    [ -z "$log_max_file_size" ] && log_max_file_size=10000  # Default to 10000 lines if not set
+    log_max_quantity_files=$(jq -r '.proxy.log.max_quantity_files' "$PARAMS_FILE")
+    [ -z "$log_max_quantity_files" ] && log_max_quantity_files=5  # Default to 5 files if not set
 
     log_path="$root_path/logs"
 
@@ -19,7 +21,7 @@ if [ ! -z "$message" ]; then
     if [ -f "$log_file" ]; then
         log_size=$(wc -l < "$log_file")
 
-        if [ "$log_size" -ge "$max_log_size" ]; then
+        if [ "$log_size" -ge "$log_max_file_size" ]; then
             log_file="$log_path/$( date '+%Y-%m-%d-%H-%M-%S' )-$( cat /etc/hostname ).log"
         fi
     else
@@ -28,14 +30,14 @@ if [ ! -z "$message" ]; then
         chown "1000:1000" "$log_path"
     fi
 
-    echo "[$( date '+%Y-%m-%d %H:%M:%S' )] $sender: $message" >> "$log_file"
+    echo "[$( date '+%Y-%m-%d %H:%M:%S' )] $caller: $message" >> "$log_file"
 
     files=($(ls -1 "$log_path"/*.log 2>/dev/null | sort))
 
     total_files=${#files[@]}
 
-    if [ "$total_files" -gt "$max_quantity_files" ]; then
-        files_to_delete=$((total_files - max_quantity_files))
+    if [ "$total_files" -gt "$log_max_quantity_files" ]; then
+        files_to_delete=$((total_files - log_max_quantity_files))
         for ((i = 0; i < files_to_delete; i++)); do
             rm -f "${files[$i]}"
         done

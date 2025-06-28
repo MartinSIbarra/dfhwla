@@ -7,10 +7,10 @@ export PARAMS_FILE="$root_path/params/params.json"
 
 validate_params "$root_path"
 
-log "$root_path" "Starting OpenSSH server..." "$0"
+log "$root_path" "Starting OpenSSH server..."
 /usr/local/bin/ssh-init.sh "$root_path" &
 
-log "$root_path" "Starting WireGuard VPN server..." "$0"
+log "$root_path" "Starting WireGuard VPN server..."
 /usr/local/bin/vpn-server-init.sh "$root_path" &
 
 wait

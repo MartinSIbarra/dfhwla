@@ -36,11 +36,11 @@ EOF
 echo "Validando configuración..."
 ssh_test=$(/usr/sbin/sshd -t)
 if [ -n "$ssh_test" ]; then
-    log "$root_path" "OpenSSH server configuration failed." "$0"
+    log "$root_path" "OpenSSH server configuration failed."
     cp "$BACKUP_FILE" "$CONFIG_FILE"
     exit 1
 else
     # Se inicia el servicio SSH
     /usr/sbin/sshd
-    log "$root_path" "OpenSSH server started successfully." "$0"
+    log "$root_path" "OpenSSH server started successfully."
 fi
