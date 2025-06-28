@@ -21,6 +21,7 @@ auto_update_time=$(jq -r '.proxy.auto_update_time' "$PARAMS_FILE")
 sleep $auto_update_time
 # Lanzar un loop para actualizar la config cada X segundos en background
 (
+  log "$root_path" "test log"
   while true; do
     /usr/local/bin/proxy-conf-updt.sh "$root_path"
     sleep $auto_update_time

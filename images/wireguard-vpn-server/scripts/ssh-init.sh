@@ -4,8 +4,16 @@ set -e
 [ -z "$1" ] && root_path="$HOME" || root_path="$1"
 
 # Se establece la contraceña de root para poder usar SSH
-vpn_ipv4_net=$(jq -r '.vpn.ipv4_net' "$PARAMS_FILE")
-ssh_passwd=$(jq -r '.vpn.ssh_passwd' "$PARAMS_FILE")
+error_messages=()
+vpn_ipv4_net=$(jq -r '.vpn.ipv4_net' "$PARAMS_FILE") && [ -n "$vpn_ipv4_net" ] || error_messages+=("vpn.ipv4_net is not set in $PARAMS_FILE")
+ssh_passwd=$(jq -r '.vpn.ssh_passwd' "$PARAMS_FILE") && [ -n "$ssh_passwd" ] || error_messages+=("vpn.ssh_passwd is not set in $PARAMS_FILE")
+if [ ${#error_messages[@]} -ne 0 ]; then
+    for message in "${error_messages[@]}"; do
+        log "$root_path" "Error: $message"
+    done
+    exit 1
+fi
+
 echo "root:$ssh_passwd" | chpasswd
 
 CONFIG_FILE="/etc/ssh/sshd_config"

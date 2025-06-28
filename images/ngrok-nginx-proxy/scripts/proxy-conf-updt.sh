@@ -11,7 +11,14 @@ main_template_file="$templates_path/main.conf"
 location_template=$(<"$templates_path/location.conf")
 
 apps=$(jq -c '.proxy.apps[]' "$PARAMS_FILE")
-listen_port=$(jq -r '.proxy.listen_port' "$PARAMS_FILE")
+error_messages=()
+listen_port=$(jq -r '.proxy.listen_port' "$PARAMS_FILE") && [ -n "$listen_port" ] || error_messages+=("proxy.listen_port is not set in $PARAMS_FILE")
+if [ ${#error_messages[@]} -ne 0 ]; then
+    for message in "${error_messages[@]}"; do
+        log "$root_path" "Error: $message"
+    done
+    exit 1
+fi
 
 locations=""
 messages=()

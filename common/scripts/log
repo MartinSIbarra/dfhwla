@@ -30,7 +30,7 @@ if [ ! -z "$message" ]; then
         chown "1000:1000" "$log_path"
     fi
 
-    echo "[$( date '+%Y-%m-%d %H:%M:%S' )] $caller: $message" >> "$log_file"
+    echo "[$( date '+%Y-%m-%d %H:%M:%S' )][$caller]: $message" >> "$log_file"
 
     files=($(ls -1 "$log_path"/*.log 2>/dev/null | sort))
 

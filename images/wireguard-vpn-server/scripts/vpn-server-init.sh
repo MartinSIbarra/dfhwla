@@ -12,13 +12,20 @@ wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
 
 # Se obtienen los parametros del archivo de configuracion
 log "$root_path" "Loading parameters from $PARAMS_FILE..."
-vpn_server_url=$(jq -r '.vpn.server_url' "$PARAMS_FILE")
-vpn_port=$(jq -r '.vpn.port' "$PARAMS_FILE")
-vpn_ipv4_net=$(jq -r '.vpn.ipv4_net' "$PARAMS_FILE")
+error_messages=()
+vpn_server_url=$(jq -r '.vpn.server_url' "$PARAMS_FILE") && [ -n "$vpn_server_url" ] || error_messages+=("vpn.server_url is not set in $PARAMS_FILE")
+vpn_port=$(jq -r '.vpn.port' "$PARAMS_FILE") && [ -n "$vpn_port" ] || error_messages+=("vpn.port is not set in $PARAMS_FILE")
+vpn_ipv4_net=$(jq -r '.vpn.ipv4_net' "$PARAMS_FILE") && [ -n "$vpn_ipv4_net" ] || error_messages+=("vpn.ipv4_net is not set in $PARAMS_FILE")
 IFS='.' read -r ipp1 ipp2 ipp3 dump <<< "$vpn_ipv4_net"
 vpn_ipv4_mask="$ipp1.$ipp2.$ipp3"
-vpn_ipv6_net=$(jq -r '.vpn.ipv6_net' "$PARAMS_FILE")
-vpn_peers_quantity=$(jq -r '.vpn.peers_quantity' "$PARAMS_FILE")
+vpn_ipv6_net=$(jq -r '.vpn.ipv6_net' "$PARAMS_FILE") && [ -n "$vpn_ipv6_net" ] || error_messages+=("vpn.ipv6_net is not set in $PARAMS_FILE")
+vpn_peers_quantity=$(jq -r '.vpn.peers_quantity' "$PARAMS_FILE") && [ -n "$vpn_peers_quantity" ] || error_messages+=("vpn.peers_quantity is not set in $PARAMS_FILE")
+if [ ${#error_messages[@]} -ne 0 ]; then
+    for message in "${error_messages[@]}"; do
+        log "$root_path" "Error: $message"
+    done
+    exit 1
+fi
 
 keys=()
 generate_vpnkey_list() {
