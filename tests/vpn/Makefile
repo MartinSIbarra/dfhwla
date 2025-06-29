@@ -8,7 +8,7 @@ run-vpn-server: rm-vpn-server
 		-p 51820:51820/udp \
 		--cap-add=NET_ADMIN \
 		--device /dev/net/tun \
-		wireguard-vpn-server:alpine
+		vpn-server:alpine
 
 it-vpn-server:
 	docker exec -it vpn-server bash
