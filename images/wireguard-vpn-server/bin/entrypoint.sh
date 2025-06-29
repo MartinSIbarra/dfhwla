@@ -13,4 +13,4 @@ $BIN_PATH/ssh-init.sh  &
 log "Starting WireGuard VPN server..."
 $BIN_PATH/vpn-server-init.sh  &
 
-wait
+tail -f /dev/null
