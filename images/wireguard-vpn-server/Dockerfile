@@ -4,6 +4,7 @@ FROM alpine:latest
 COPY ./bin/entrypoint.sh \ 
     ./bin/vpn-server-init.sh \
     ./bin/ssh-init.sh \
+    ./bin/ddns-updt.sh \
     ./bin/validate-params.sh \
     ./bin/log.sh \
     ./bin/env.sh \
@@ -26,6 +27,7 @@ RUN apk update \
     && chmod +x /usr/local/bin/vpn-server-init.sh \
     && chmod +x /usr/local/bin/ssh-init.sh \
     && chmod +x /usr/local/bin/validate-params.sh \
+    && chmod +x /usr/local/bin/ddns-updt.sh \
     && chmod +x /usr/local/bin/log.sh \
     && chmod +x /usr/local/bin/env.sh \
     # agregar aliases
