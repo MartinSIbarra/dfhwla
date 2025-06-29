@@ -1,17 +1,13 @@
+# Dockerfile para el contenedor de actualización de DDNS
 FROM alpine:latest
 
 # Agrega scripts al contenedor
 COPY ./bin/entrypoint.sh \ 
-    ./bin/vpn-server-init.sh \
-    ./bin/ssh-init.sh \
-    ./bin/ddns-updt.sh \
-    ./bin/validate-params.sh \
-    ./bin/log.sh \
     ./bin/env.sh \
+    ./bin/log.sh \
+    ./bin/validate-params.sh \
+    ./bin/ddns-updt.sh \
     /usr/local/bin/
-
-# Agrega templates al contenedor
-COPY ./templates /root/templates
 
 # Instalar paquetes necesarios
 RUN apk update \
@@ -24,10 +20,10 @@ RUN apk update \
     && ssh-keygen -A \
     # Agrega permisos de ejecución a los scripts
     && chmod +x /usr/local/bin/entrypoint.sh \
-    && chmod +x /usr/local/bin/ddns-updt.sh \
-    && chmod +x /usr/local/bin/validate-params.sh \
-    && chmod +x /usr/local/bin/log.sh \
     && chmod +x /usr/local/bin/env.sh \
+    && chmod +x /usr/local/bin/log.sh \
+    && chmod +x /usr/local/bin/validate-params.sh \
+    && chmod +x /usr/local/bin/ddns-updt.sh \
     # agregar aliases
     && echo "alias a='ls -la --color --group-directories-first'" >> /root/.bashrc
 

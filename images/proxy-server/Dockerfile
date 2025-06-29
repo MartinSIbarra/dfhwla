@@ -1,11 +1,11 @@
 FROM alpine:latest
 
 # Agrega scripts al contenedor
-COPY ./bin/proxy-conf-updt.sh \
-    ./bin/entrypoint.sh \
-    ./bin/validate-params.sh \
-    ./bin/log.sh \
+COPY ./bin/entrypoint.sh \
     ./bin/env.sh \
+    ./bin/log.sh \
+    ./bin/validate-params.sh \
+    ./bin/proxy-conf-updt.sh \
     /usr/local/bin/
 
 # Agrega templates al contenedor
@@ -19,11 +19,11 @@ RUN apk update \
     # Crear path necesario para nginx
     && mkdir -p /run/nginx \
     # Agrega permisos de ejecución a los scripts
-    && chmod +x /usr/local/bin/proxy-conf-updt.sh \
     && chmod +x /usr/local/bin/entrypoint.sh \
-    && chmod +x /usr/local/bin/validate-params.sh \
-    && chmod +x /usr/local/bin/log.sh \
     && chmod +x /usr/local/bin/env.sh \
+    && chmod +x /usr/local/bin/log.sh \
+    && chmod +x /usr/local/bin/validate-params.sh \
+    && chmod +x /usr/local/bin/proxy-conf-updt.sh \
     # Agrega alias para facilitar el uso
     && echo "alias a='ls -la --color --group-directories-first'" >> /root/.bashrc
 
