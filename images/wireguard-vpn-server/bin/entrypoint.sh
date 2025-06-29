@@ -13,4 +13,14 @@ $BIN_PATH/ssh-init.sh  &
 log "Starting WireGuard VPN server..."
 $BIN_PATH/vpn-server-init.sh  &
 
-tail -f /dev/null
+(
+  while true; do
+    $BIN_PATH/ddns-updt.sh
+    duckdns_update_time=$(jq -r '.ddns.duckdns_update_time' "$PARAMS_FILE")
+    [ -z "$duckdns_update_time" ] && duckdns_update_time=3600  # Default if not set
+    sleep $duckdns_update_time
+  done
+) &
+log "Started background process to update DDNS(DuckDNS) every $duckdns_update_time seconds."
+
+wait
