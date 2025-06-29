@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -o 'pipefail'
 
 # Hace source de las variables de entorno
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
@@ -44,7 +44,6 @@ generate_vpnkey_list() {
 # Verifica si el archivo de claves para la vpn existe y tiene contenido, si no existe lo crea y lo carga sino agrega las claves nuevas
 if [ ! -s "$vpnkeys_list_file" ]; then
     rm -f "$vpnkeys_list_file"
-    mkdir -p "$CONFIG_PATH"
     touch "$vpnkeys_list_file"
 
     generate_vpnkey_list "1" "$vpn_peers_quantity" "$vpnkeys_list_file" "$vpn_ipv4_mask"

@@ -1,11 +1,11 @@
 #!/bin/bash
-set -e
+set -o 'pipefail'
 
 # Hace source de las variables de entorno
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
 # Se valida el archivo de parametros
-$COMMONS_BIN_PATH/validate_params.sh
+$COMMONS_BIN_PATH/validate-params.sh
 
 log "Starting OpenSSH server..."
 $BIN_PATH/ssh-init.sh  &

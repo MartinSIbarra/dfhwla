@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -o 'pipefail'
 
 # Hace source de las variables de entorno
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
