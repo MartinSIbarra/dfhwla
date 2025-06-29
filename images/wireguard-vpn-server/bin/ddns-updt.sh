@@ -3,6 +3,7 @@
 # Hace source de las variables de entorno
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
+log "Updating DuckDNS domain..."
 error_messages=()
 duckdns_domain=$(jq -r '.ddns.duckdns_domain' "$PARAMS_FILE") && [ -n "$duckdns_domain" ] || error_messages+=("ddns.duckdns_domain is not set in $PARAMS_FILE")
 duckdns_token=$(jq -r '.ddns.duckdns_token' "$PARAMS_FILE") && [ -n "$duckdns_token" ] || error_messages+=("ddns.duckdns_token is not set in $PARAMS_FILE")
@@ -12,6 +13,8 @@ if [ ${#error_messages[@]} -ne 0 ]; then
     done
     exit 1
 fi
+log "DuckDNS domain: $duckdns_domain"
+log "DuckDNS token: $duckdns_token"
 
 url="https://www.duckdns.org/update?domains=$duckdns_domain&token=$duckdns_token&ip="
 
