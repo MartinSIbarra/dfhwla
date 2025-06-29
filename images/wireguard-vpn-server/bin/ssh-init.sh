@@ -31,14 +31,9 @@ sed -i "/^Match all/,/^Match /d" "$sshd_config_file"
 cat << EOF >> "$sshd_config_file"
 
 # Permitir acceso root con clave solo desde la VPN
+PermitRootLogin yes
 Match Address $vpn_ipv4_net User root
-    PermitRootLogin yes
     PasswordAuthentication yes
-
-# Para el resto, denegar acceso root por seguridad
-Match all
-    PermitRootLogin no
-    PasswordAuthentication no
 EOF
 
 # Validar configuración
