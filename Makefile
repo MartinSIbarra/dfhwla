@@ -1,28 +1,53 @@
 .PHONY: \
 	build-all \
-	build-ngrok-nginx-proxy \
-	build-wireguard-vpn-server \
-	build-fake-prod-server \
-	build-fake-uat-server \
-	push-ngrok-nginx-proxy \
-	push-wireguard-vpn-server \
-	push-fake-prod-server \
-	push-fake-uat-server
+	build-tunnel-server \
+	build-vpn-server \
+	build-proxy-server \
+	build-ddns-updater \
+	push-tunnel-server \
+	push-vpn-server \
+	push-proxy-server \
+	push-ddns-updater
 	
 clean-images:
 	docker rmi -f \
-		ngrok-nginx-proxy:alpine \
-		wireguard-vpn-server:alpine \
-		fake-prod-server:alpine \
-		fake-uat-server:alpine
+		tunnel-server:alpine \
+		vpn-server:alpine \
+		proxy-server:alpine \
+		ddns-updater:alpine \
 	docker builder prune -f
 
 build-all: \
-	build-ngrok-nginx-proxy \
-	build-wireguard-vpn-server \
-	build-fake-prod-server \
-	build-fake-uat-server
+	build-tunnel-server \
+	build-vpn-server \
+	build-proxy-server \
+	build-ddns-updater
 
+build-tunnel-server:
+	./common/helpers/build.sh "tunnel-server" "alpine"
+
+push-tunnel-server:
+	./common/helpers/push.sh "tunnel-server" "alpine"
+
+build-vpn-server:
+	./common/helpers/build.sh "vpn-server" "alpine"
+
+push-vpn-server:
+	./common/helpers/push.sh "vpn-server" "alpine"
+
+build-proxy-server:
+	./common/helpers/build.sh "proxy-server" "alpine"
+
+push-proxy-server:
+	./common/helpers/push.sh "proxy-server" "alpine"
+
+build-ddns-updater:
+	./common/helpers/build.sh "ddns-updater" "alpine"
+
+push-ddns-updater:
+	./common/helpers/push.sh "ddns-updater" "alpine"
+
+# Older versions of the Makefile
 build-ngrok-nginx-proxy:
 	./common/helpers/build.sh "ngrok-nginx-proxy" "alpine"
 
@@ -33,7 +58,7 @@ build-fake-prod-server:
 	./common/helpers/build.sh "fake-prod-server" "alpine"
 
 build-fake-uat-server:
-	./common/helpers/build.sh "fake-uat-server" "alpine"
+	./common/helpers/build.sh "fake-uat-server" "alpine"bu
 
 push-ngrok-nginx-proxy:
 	./common/helpers/push.sh "ngrok-nginx-proxy" "alpine"
