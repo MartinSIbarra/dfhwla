@@ -14,10 +14,6 @@ RUN apk update \
     # Instala dependencias y herramientas
     && apk add --no-cache iproute2 curl nano jq bash \
     && rm -rf /var/cache/apk/* \
-    # Crear path necesario para el servidor SSH
-    && mkdir -p /var/run/sshd \
-    # Generar las claves del host
-    && ssh-keygen -A \
     # Agrega permisos de ejecución a los scripts
     && chmod +x /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/env.sh \
