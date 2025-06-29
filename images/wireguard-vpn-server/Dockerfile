@@ -16,7 +16,7 @@ COPY ./templates /root/templates
 # Instalar paquetes necesarios
 RUN apk update \
     # Instala dependencias y herramientas
-    && apk add --no-cache openssh wireguard-tools iptables iproute2 nano jq bash \
+    && apk add --no-cache openssh wireguard-tools iptables iproute2 curl nano jq bash \
     && rm -rf /var/cache/apk/* \
     # Crear path necesario para el servidor SSH
     && mkdir -p /var/run/sshd \
