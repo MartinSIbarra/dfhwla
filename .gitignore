@@ -3,8 +3,11 @@
 !Makefile
 !*images
 !images/**
-!*scripts
-!scripts/**
 !*common
 !common/**
+!*tests
+!*tests/proxy/
+!tests/proxy/Makefile
+!*tests/vpn/
+!tests/vpn/Makefile
 !README.md
