@@ -10,7 +10,7 @@ $COMMONS_BIN_PATH/validate_params.sh
 # Ejecuta nginx en segundo plano
 log "Starting nginx server in background..."
 rm -f "/etc/nginx/http.d/ngrok-proxy.conf" 2>/dev/null || true
-rm -f "$CONFIG_PATH/ngrok-proxy.conf" 2>/dev/null || true
+rm -f "$CONFIG_PATH/proxy/ngrok-proxy.conf" 2>/dev/null || true
 nginx -g "daemon off;" &
 
 # Lanzar un loop para actualizar la config cada X segundos en background

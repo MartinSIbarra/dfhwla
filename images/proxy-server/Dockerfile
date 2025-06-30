@@ -14,7 +14,7 @@ COPY ./templates /root/templates
 # Instalar paquetes necesarios
 RUN apk update \
     # Instala dependencias y herramientas
-    && apk add --no-cache nginx nano jq bash \
+    && apk add --no-cache nginx curl nano jq bash \
     && rm -rf /var/cache/apk/* \
     # Crear path necesario para nginx
     && mkdir -p /run/nginx \
