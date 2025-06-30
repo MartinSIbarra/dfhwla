@@ -5,7 +5,10 @@ set -o pipefail
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
 nginx_config_path="/etc/nginx/http.d/"
-nginx_config_file="$CONFIG_PATH/ngrok-proxy.conf"
+proxy_config_path="$CONFIG_PATH/proxy"
+nginx_config_file="$proxy_config_path/ngrok-proxy.conf"
+
+mkdir -p "$proxy_config_path"
 
 main_template_file="$TEMPLATES_PATH/main.conf"
 location_template=$(<"$TEMPLATES_PATH/location.conf")
@@ -57,5 +60,6 @@ if [ "$TEST" != "true" ]; then
             log "$message"
         done
         log "Updated nginx configuration with new proxy settings."
+        chown -R "1000:1000" "$nginx_config_file"
     fi
 fi
