@@ -24,7 +24,7 @@ log "ngrok_tunnel_port: $ngrok_tunnel_port"
 log "ngrok_log_file: $log_file"
 [ "$TEST" != "true" ] \
     && rm -f "$log_file" \
-    && ngrok http $ngrok_tunnel_port --url=$ngrok_tunnel_url --authtoken=$ngrok_auth_token --log=$log_file
+    && ngrok http proxy-server:$ngrok_tunnel_port --url=$ngrok_tunnel_url --authtoken=$ngrok_auth_token --log=$log_file
 log "Ngrok tunnel started."
 
 chown "1000":"1000" "$log_file"
