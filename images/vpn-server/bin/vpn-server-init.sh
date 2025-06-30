@@ -4,8 +4,11 @@ set -o 'pipefail'
 # Hace source de las variables de entorno
 [ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
 
-vpnkeys_list_file="$CONFIG_PATH/vpnkeys.list"
-vpn_interface="$CONFIG_PATH/server.conf"
+vpn_config_path="$CONFIG_PATH/vpn"
+vpnkeys_list_file="$vpn_config_path/vpnkeys.list"
+vpn_interface="$vpn_config_path/server.conf"
+
+mkdir -p "$vpn_config_path"
 
 wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
 
@@ -59,10 +62,11 @@ else
         log "Required peers quantity ($vpn_peers_quantity) already reached with $cant_vpnkeys keys."
     else
         generate_vpnkey_list "$start" "$vpn_peers_quantity" "$vpnkeys_list_file" "$vpn_ipv4_mask"
+        chown -R "1000:1000" "$vpnkeys_list_file"
     fi
 fi
 
-rm -f "$CONFIG_PATH"/*.conf
+rm -f "$vpn_config_path"/*.conf
 
 # Toma la primera clave de la lista para el servidor y la elimina de la lista
 key="${keys[0]}"
@@ -75,11 +79,14 @@ while IFS= read -r line; do
     line="${line//<vpn_port>/$vpn_port}"
     line="${line//<server_private_key>/$server_private_key}"
     echo "$line" | tee -a "$vpn_interface" > /dev/null 2>&1
+
+    chown -R "1000:1000" "$vpn_interface"
 done < "$TEMPLATES_PATH/server-server-part.conf"
 
 i=1
 for key in "${keys[@]}"; do
-    touch "$CONFIG_PATH/peer$i.conf"
+    vpn_peer_config_file="$vpn_config_path/peer$i.conf"
+    touch "$vpn_peer_config_file"
     IFS=',' read -r peer_private_key peer_public_key peer_vpn_ip <<< "$key"
 
     # Crea el archivo de configuracion del peer 
@@ -93,7 +100,7 @@ for key in "${keys[@]}"; do
         line="${line//<allowed_ips_ipv4>/$ipv4_with_cidr}"
         ipv6_with_cidr="$vpn_ipv6_net/64"
         line="${line//<allowed_ips_ipv6>/$ipv6_with_cidr}"
-        echo "$line" | tee -a "$CONFIG_PATH/peer$i.conf" > /dev/null 2>&1
+        echo "$line" | tee -a "$vpn_peer_config_file" > /dev/null 2>&1
     done < "$TEMPLATES_PATH/peer.conf"
 
     # Agrega la parte del peer al archivo de configuracion del servidor
@@ -103,6 +110,8 @@ for key in "${keys[@]}"; do
         line="${line//<peer_public_key>/$peer_public_key}"
         echo "$line" | tee -a "$vpn_interface" > /dev/null 2>&1
     done < "$TEMPLATES_PATH/server-peer-part.conf"
+
+    chown -R "1000:1000" "$vpn_peer_config_file"
 
     ((i++))
 done
