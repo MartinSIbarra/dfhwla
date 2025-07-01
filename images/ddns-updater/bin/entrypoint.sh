@@ -21,6 +21,8 @@ last_duckdns_update_time=""
     elif [ "$duckdns_update_time" != "$last_duckdns_update_time" ]; then
       log "Update time to update DDNS(DuckDNS) changed from every $last_duckdns_update_time seconds to every $duckdns_update_time seconds."
       last_duckdns_update_time="$duckdns_update_time"
+    else
+      log "DDNS(DuckDNS) will be updated every $duckdns_update_time seconds."
     fi
     sleep $duckdns_update_time
   done
