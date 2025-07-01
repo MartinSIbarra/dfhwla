@@ -18,3 +18,6 @@ rm-vpn-server:
 
 test-vpn-server-init:
 	./bin/vpn-server-init.sh
+
+set-tree-folders:
+	[ -e params ] || ln -s ../../z.params params

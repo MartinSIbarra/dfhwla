@@ -77,3 +77,6 @@ create-prod-net:
 
 create-uat-net:
 	docker network create uat-net 2>/dev/null || true
+
+set-tree-folders:
+	[ -e params ] || ln -s ../../z.params params
