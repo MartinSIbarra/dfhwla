@@ -7,6 +7,8 @@ set -o 'pipefail'
 # Se valida el archivo de parametros
 $COMMONS_BIN_PATH/validate-params.sh
 
+duckdns_update_time=""
+last_duckdns_update_time=""
 (
   while true; do
     $BIN_PATH/ddns-updt.sh
@@ -14,7 +16,13 @@ $COMMONS_BIN_PATH/validate-params.sh
     [ -z "$duckdns_update_time" ] && duckdns_update_time=3600  # Default if not set
     sleep $duckdns_update_time
   done
+  if [ -z "$last_duckdns_update_time" ]; then
+    log "Started background process to update DDNS(DuckDNS) every $duckdns_update_time seconds."
+    last_duckdns_update_time="$duckdns_update_time"
+  elif [ "$duckdns_update_time" != "$last_duckdns_update_time" ]; then
+    log "Update time to update DDNS(DuckDNS) changed from every $last_duckdns_update_time seconds to every $duckdns_update_time seconds."
+    last_duckdns_update_time="$duckdns_update_time"
+  fi
 ) &
-log "Started background process to update DDNS(DuckDNS) every $duckdns_update_time seconds."
 
 wait
