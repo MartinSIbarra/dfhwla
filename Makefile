@@ -90,16 +90,3 @@ rm-fake-uat-server:
 
 push-fake-uat-server:
 	./common/helpers/push.sh "fake-uat-server" "alpine"
-
-# Older versions of images
-build-ngrok-nginx-proxy:
-	./common/helpers/build.sh "ngrok-nginx-proxy" "alpine"
-
-build-wireguard-vpn-server:
-	./common/helpers/build.sh "wireguard-vpn-server" "alpine"
-
-push-ngrok-nginx-proxy:
-	./common/helpers/push.sh "ngrok-nginx-proxy" "alpine"
-
-push-wireguard-vpn-server:
-	./common/helpers/push.sh "wireguard-vpn-server" "alpine"
