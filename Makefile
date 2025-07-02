@@ -4,28 +4,38 @@
 	build-vpn-server \
 	build-proxy-server \
 	build-ddns-updater \
+	build-fake-prod-server \
+	build-fake-uat-server \
 	rm-tunnel-server \
 	rm-vpn-server \
 	rm-proxy-server \
 	rm-ddns-updater \
+	rm-fake-prod-server \
+	rm-fake-uat-server \
 	push-tunnel-server \
 	push-vpn-server \
 	push-proxy-server \
-	push-ddns-updater
-	
+	push-ddns-updater \
+	push-fake-prod-server \
+	push-fake-uat-server 
+
 clean-images:
 	docker rmi -f \
 		tunnel-server:alpine \
 		vpn-server:alpine \
 		proxy-server:alpine \
 		ddns-updater:alpine \
+		fake-prod-server:alpine \
+		fake-uat-server:alpine \
 	docker builder prune -f
 
 build-all: \
 	build-tunnel-server \
 	build-vpn-server \
 	build-proxy-server \
-	build-ddns-updater
+	build-ddns-updater \
+	build-fake-prod-server \
+	build-fake-uat-server
 
 build-tunnel-server: rm-tunnel-server
 	./common/helpers/build.sh "tunnel-server" "alpine"
@@ -63,27 +73,33 @@ push-ddns-updater:
 rm-ddns-updater:
 	docker rm -f ddns-updater 2>/dev/null || true
 
-# Older versions of the Makefile
+build-fake-prod-server: rm-fake-prod-server
+	./common/helpers/build.sh "fake-prod-server" "alpine"
+
+rm-fake-prod-server:
+	docker rm -f fake-prod-server 2>/dev/null || true
+
+push-fake-prod-server:
+	./common/helpers/push.sh "fake-prod-server" "alpine"
+
+build-fake-uat-server: rm-fake-uat-server
+	./common/helpers/build.sh "fake-uat-server" "alpine"
+
+rm-fake-uat-server:
+	docker rm -f fake-uat-server 2>/dev/null || true
+
+push-fake-uat-server:
+	./common/helpers/push.sh "fake-uat-server" "alpine"
+
+# Older versions of images
 build-ngrok-nginx-proxy:
 	./common/helpers/build.sh "ngrok-nginx-proxy" "alpine"
 
 build-wireguard-vpn-server:
 	./common/helpers/build.sh "wireguard-vpn-server" "alpine"
 
-build-fake-prod-server:
-	./common/helpers/build.sh "fake-prod-server" "alpine"
-
-build-fake-uat-server:
-	./common/helpers/build.sh "fake-uat-server" "alpine"bu
-
 push-ngrok-nginx-proxy:
 	./common/helpers/push.sh "ngrok-nginx-proxy" "alpine"
 
 push-wireguard-vpn-server:
 	./common/helpers/push.sh "wireguard-vpn-server" "alpine"
-
-push-fake-prod-server:
-	./common/helpers/push.sh "fake-prod-server" "alpine"
-
-push-fake-uat-server:
-	./common/helpers/push.sh "fake-uat-server" "alpine"
