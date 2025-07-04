@@ -20,6 +20,8 @@ RUN apk update \
     # Instala dependencias y herramientas
     && apk add --no-cache openssh wireguard-tools iptables iproute2 curl nano jq bash \
     && rm -rf /var/cache/apk/* \
+    # Establecer bash como shell predeterminado
+    && sed -i 's|/bin/sh|/bin/bash|' /etc/passwd \
     # Crear path necesario para el servidor SSH
     && mkdir -p /var/run/sshd \
     # Generar las claves del host

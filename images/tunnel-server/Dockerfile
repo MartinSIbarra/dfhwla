@@ -15,6 +15,8 @@ RUN apk update \
     # Agrega ngrok al contenedor
     && curl -sSfL https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-stable-linux-amd64.tgz | tar -xz -C /usr/local/bin \
     && rm -rf /var/cache/apk/* \
+    # Establecer bash como shell predeterminado
+    && sed -i 's|/bin/sh|/bin/bash|' /etc/passwd \
     # Crear path necesario para nginx
     && mkdir -p /run/nginx \
     # Agrega permisos de ejecución a los scripts

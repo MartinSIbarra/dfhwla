@@ -1,5 +1,3 @@
-version: "3.9"  # Versión del esquema de Compose, compatible con Docker Compose v2+
-
 services:
 
   ddns:
@@ -70,9 +68,12 @@ services:
 
 networks:
   proxy-net:
+    name: proxy-net
     driver: bridge
   prod-net:
+    name: prod-net  
     driver: bridge
   uat-net:
+    name: uat-net
     driver: bridge
 
