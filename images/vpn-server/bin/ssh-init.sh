@@ -24,16 +24,24 @@ sshd_config_file_backup="/etc/ssh/sshd_config.bak"
 cp "$sshd_config_file" "$sshd_config_file_backup"
 
 # Eliminar bloques previos si ya existen (limpio antiguos Match root)
-sed -i "/^Match Address $vpn_ipv4_net User root/,/^Match all/d" "$sshd_config_file"
-sed -i "/^Match all/,/^Match /d" "$sshd_config_file"
+sed -i "/^AllowTcpForwarding/d" "$sshd_config_file"
+sed -i "/^PermitOpen/d" "$sshd_config_file"
+sed -i "/^PermitTunnel/d" "$sshd_config_file"
+sed -i "/^#InicioCustomSettings/,/^#FinCustomSettings/d" "$sshd_config_file"
 
 # Agregar al final la configuración nueva
 cat << EOF >> "$sshd_config_file"
-
+#InicioCustomSettings
+# Permitir acceso TCP y tunelización
+AllowTcpForwarding yes
+PermitOpen any
+PermitTunnel yes
 # Permitir acceso root con clave solo desde la VPN
 PermitRootLogin yes
 Match Address $vpn_ipv4_net User root
     PasswordAuthentication yes
+#FinCustomSettings
+
 EOF
 
 # Validar configuración

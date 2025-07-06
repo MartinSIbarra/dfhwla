@@ -17,6 +17,7 @@ services:
       - ./config:/root/config
       - ./params:/root/params
       - ./logs:/root/logs
+      - ./vscode-server-data:/root/.vscode-server
     ports:
       - "51820:51820/udp"
     cap_add:

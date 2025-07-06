@@ -18,7 +18,7 @@ COPY ./templates/peer.conf \
 # Instalar paquetes necesarios
 RUN apk update \
     # Instala dependencias y herramientas
-    && apk add --no-cache openssh wireguard-tools iptables iproute2 curl nano jq bash \
+    && apk add --no-cache openssh wireguard-tools iptables iproute2 tar wget curl nano jq bash \
     && rm -rf /var/cache/apk/* \
     # Establecer bash como shell predeterminado
     && sed -i 's|/bin/sh|/bin/bash|' /etc/passwd \
