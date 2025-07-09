@@ -1,13 +1,15 @@
 # Dockerfile para el contenedor de actualización de DDNS
 FROM alpine:latest
 
+ENV BIN_PATH="/usr/local/bin"
+
 # Agrega scripts al contenedor
 COPY ./bin/entrypoint.sh \ 
     ./bin/env.sh \
     ./bin/log.sh \
     ./bin/validate-params.sh \
     ./bin/ddns-updt.sh \
-    /usr/local/bin/
+    ${BIN_PATH}/
 
 # Instalar paquetes necesarios
 RUN apk update \
@@ -17,13 +19,13 @@ RUN apk update \
     # Establecer bash como shell predeterminado
     && sed -i 's|/bin/sh|/bin/bash|' /etc/passwd \
     # Agrega permisos de ejecución a los scripts
-    && chmod +x /usr/local/bin/entrypoint.sh \
-    && chmod +x /usr/local/bin/env.sh \
-    && chmod +x /usr/local/bin/log.sh \
-    && chmod +x /usr/local/bin/validate-params.sh \
-    && chmod +x /usr/local/bin/ddns-updt.sh \
+    && chmod +x ${BIN_PATH}/entrypoint.sh \
+    && chmod +x ${BIN_PATH}/env.sh \
+    && chmod +x ${BIN_PATH}/log.sh \
+    && chmod +x ${BIN_PATH}/validate-params.sh \
+    && chmod +x ${BIN_PATH}/ddns-updt.sh \
     # agregar aliases
     && echo "alias a='ls -la --color --group-directories-first'" >> /root/.bashrc
 
 # Setea el entrypoint
-ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

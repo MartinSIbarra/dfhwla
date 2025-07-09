@@ -2,7 +2,7 @@
 set -o pipefail
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 
 nginx_config_path="/etc/nginx/http.d/"
 proxy_config_path="$CONFIG_PATH/proxy"
@@ -51,7 +51,7 @@ final_config=$(sed '/<locations>/{
 final_config=$(echo "$final_config" | sed "s|<listen_port>|$listen_port|g")
 
 # Compara con el archivo real, solo escribe si cambió
-if [ "$TEST" != "true" ]; then
+if [ "$ENVIRONMENT" == "container" ]; then
     if [ ! -s "$nginx_config_file" ] || ! diff -q <(echo "$final_config") "$nginx_config_file" >/dev/null; then
         echo "$final_config" > "$nginx_config_file"
         ln -s "$nginx_config_file" "$nginx_config_path"

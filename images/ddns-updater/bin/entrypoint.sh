@@ -2,7 +2,7 @@
 set -o 'pipefail'
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 
 # Se valida el archivo de parametros
 $COMMONS_BIN_PATH/validate-params.sh

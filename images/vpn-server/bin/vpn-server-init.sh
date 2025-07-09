@@ -2,7 +2,6 @@
 set -o 'pipefail'
 
 # Hace source de las variables de entorno
-# Para pruebas se setear la variable BIN_PATH con el path correcto, en el contenedor se setea con el valor /usr/local/bin
 source "$BIN_PATH/env.sh"
 
 vpn_config_path="$CONFIG_PATH/vpn"

@@ -1,12 +1,14 @@
 FROM alpine:latest
 
+ENV BIN_PATH="/usr/local/bin"
+
 # Agrega scripts al contenedor
 COPY ./bin/entrypoint.sh \
     ./bin/env.sh \
     ./bin/log.sh \
     ./bin/validate-params.sh \
     ./bin/proxy-conf-updt.sh \
-    /usr/local/bin/
+    ${BIN_PATH}/
 
 # Agrega templates al contenedor
 COPY ./templates /root/templates
@@ -21,11 +23,11 @@ RUN apk update \
     # Crear path necesario para nginx
     && mkdir -p /run/nginx \
     # Agrega permisos de ejecución a los scripts
-    && chmod +x /usr/local/bin/entrypoint.sh \
-    && chmod +x /usr/local/bin/env.sh \
-    && chmod +x /usr/local/bin/log.sh \
-    && chmod +x /usr/local/bin/validate-params.sh \
-    && chmod +x /usr/local/bin/proxy-conf-updt.sh \
+    && chmod +x ${BIN_PATH}/entrypoint.sh \
+    && chmod +x ${BIN_PATH}/env.sh \
+    && chmod +x ${BIN_PATH}/log.sh \
+    && chmod +x ${BIN_PATH}/validate-params.sh \
+    && chmod +x ${BIN_PATH}/proxy-conf-updt.sh \
     # Agrega alias para facilitar el uso
     && echo "alias a='ls -la --color --group-directories-first'" >> /root/.bashrc
 

@@ -2,7 +2,7 @@
 
 set -e
 
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 # Hace source para cargar la funcion log
 source "$COMMONS_BIN_PATH/log.sh"
 

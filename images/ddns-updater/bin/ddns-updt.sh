@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 
 log "Updating DuckDNS domain..."
 error_messages=()
