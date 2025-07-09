@@ -1,13 +1,15 @@
 FROM alpine:latest
 
+ENV BIN_PATH="/usr/local/bin"
+
 # Agrega scripts al contenedor
-COPY ./bin/entrypoint.sh \ 
+COPY ./bin/entrypoint.sh \
     ./bin/env.sh \
     ./bin/log.sh \
     ./bin/validate-params.sh \
     ./bin/vpn-server-init.sh \
     ./bin/ssh-init.sh \
-    /usr/local/bin/
+    ${BIN_PATH}/
 
 # Agrega templates al contenedor
 COPY ./templates/peer.conf \
@@ -27,12 +29,12 @@ RUN apk update \
     # Generar las claves del host
     && ssh-keygen -A \
     # Agrega permisos de ejecución a los scripts
-    && chmod +x /usr/local/bin/entrypoint.sh \
-    && chmod +x /usr/local/bin/env.sh \
-    && chmod +x /usr/local/bin/log.sh \
-    && chmod +x /usr/local/bin/validate-params.sh \
-    && chmod +x /usr/local/bin/vpn-server-init.sh \
-    && chmod +x /usr/local/bin/ssh-init.sh \
+    && chmod +x ${BIN_PATH}/entrypoint.sh \
+    && chmod +x ${BIN_PATH}/env.sh \
+    && chmod +x ${BIN_PATH}/log.sh \
+    && chmod +x ${BIN_PATH}/validate-params.sh \
+    && chmod +x ${BIN_PATH}/vpn-server-init.sh \
+    && chmod +x ${BIN_PATH}/ssh-init.sh \
     # agregar aliases
     && echo "alias a='ls -la --color --group-directories-first'" >> /root/.bashrc
 
@@ -40,4 +42,4 @@ RUN apk update \
 EXPOSE 22
 
 # Setea el entrypoint
-ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "${BIN_PATH}/entrypoint.sh"]

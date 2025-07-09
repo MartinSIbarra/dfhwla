@@ -2,8 +2,8 @@
 set -o 'pipefail'
 
 # Hace source de las variables de entorno
-# Para pruebas se debe cambiar este archivo por el que contenga las variables de pruebas
-source "/usr/local/bin/env.sh"
+# Para pruebas se setear la variable BIN_PATH con el path correcto, en el contenedor se setea con el valor /usr/local/bin
+source "$BIN_PATH/env.sh"
 
 vpn_config_path="$CONFIG_PATH/vpn"
 vpnkeys_list_file="$vpn_config_path/vpnkeys.list"
@@ -11,7 +11,7 @@ vpn_interface="$vpn_config_path/server.conf"
 
 mkdir -p "$vpn_config_path"
 
-wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
+[[ "$ENVIRONMENT" == "container" ]] && wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
 
 # Se obtienen los parametros del archivo de configuracion
 log "Loading parameters from $PARAMS_FILE..."
@@ -133,6 +133,6 @@ for key in "${keys[@]}"; do
     ((i++))
 done
 
-wg-quick up "$vpn_interface"
+[[ "$ENVIRONMENT" == "container" ]] && wg-quick up "$vpn_interface"
 
 log "WireGuard VPN server started successfully."
