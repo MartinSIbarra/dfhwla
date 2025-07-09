@@ -42,4 +42,4 @@ RUN apk update \
 EXPOSE 22
 
 # Setea el entrypoint
-ENTRYPOINT ["/bin/bash", "${BIN_PATH}/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]

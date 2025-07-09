@@ -12,6 +12,6 @@ export PARAMS_FILE="$ROOT_PATH/params/params.json"
 source "$COMMONS_BIN_PATH/log.sh"
 
 # Se crean los directorios necesarios si no existen
-mkdir -p "$CONFIG_PATH"
-mkdir -p "$TEMPLATES_PATH"
-mkdir -p "$LOG_PATH"
+mkdir -p "$CONFIG_PATH" && chown "1000:1000" "$CONFIG_PATH"
+mkdir -p "$TEMPLATES_PATH" && chown "1000:1000" "$TEMPLATES_PATH"
+mkdir -p "$LOG_PATH" && chown "1000:1000" "$LOG_PATH"

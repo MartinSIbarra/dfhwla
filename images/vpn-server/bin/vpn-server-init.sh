@@ -10,6 +10,7 @@ vpnkeys_list_file="$vpn_config_path/vpnkeys.list"
 vpn_interface="$vpn_config_path/server.conf"
 
 mkdir -p "$vpn_config_path"
+chown "1000:1000" "$vpn_config_path"
 
 [[ "$ENVIRONMENT" == "container" ]] && wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
 
