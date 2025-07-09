@@ -2,7 +2,8 @@
 set -o 'pipefail'
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+# Para pruebas se debe cambiar este archivo por el que contenga las variables de pruebas
+source "/usr/local/bin/env.sh"
 
 vpn_config_path="$CONFIG_PATH/vpn"
 vpnkeys_list_file="$vpn_config_path/vpnkeys.list"
@@ -32,18 +33,29 @@ fi
 keys=()
 generate_vpnkey_list() {
     local from=$1
-    local peers=$2
+    local peers_quantity=$2
     local file=$3
     local ivp4_mask=$4
-    for i in $(seq $from $peers); do
+    local last_ipv4_value=0
+    for i in $(seq $from $peers_quantity); do
+        if ([[ "$i" -eq 1 ]] || [[ "$i" -eq 2 ]]); then
+            # Para los primeros dos peers, se asigna un valor especial, 101 y 102
+            # 101 sera la direccion del servidor de vpn
+            # 102 sera la direccion del host donde se ejecuta el servidor de vpn
+            last_ipv4_value=$((i + 100))
+        else
+            # Para los siguientes peers, se asigna un valor secuencial a partir de 1
+            last_ipv4_value=$((i - 2))
+        fi
         private_key=$(wg genkey) 
         public_key=$(echo "$private_key" | wg pubkey)
-        key="$private_key,$public_key,$ivp4_mask.$i"
+        key="$private_key,$public_key,$ivp4_mask.$last_ipv4_value"
         echo "$key" | tee -a "$file" > /dev/null 2>&1
         keys+=("$key")
     done
 }
 
+vpn_peers_quantity=$((vpn_peers_quantity + 2)) # Se suman 2 peers para incluir el servidor y el host del servidor
 # Verifica si el archivo de claves para la vpn existe y tiene contenido, si no existe lo crea y lo carga sino agrega las claves nuevas
 if [ ! -s "$vpnkeys_list_file" ]; then
     rm -f "$vpnkeys_list_file"
@@ -83,9 +95,14 @@ while IFS= read -r line; do
     chown -R "1000:1000" "$vpn_interface"
 done < "$TEMPLATES_PATH/server-server-part.conf"
 
-i=1
+i=0
 for key in "${keys[@]}"; do
-    vpn_peer_config_file="$vpn_config_path/peer$i.conf"
+    if [[ "$i" -eq 0 ]]; then
+        # El primer peer se configura como el host del servidor
+        vpn_peer_config_file="$vpn_config_path/host.conf"  
+    else
+        vpn_peer_config_file="$vpn_config_path/peer$i.conf"
+    fi
     touch "$vpn_peer_config_file"
     IFS=',' read -r peer_private_key peer_public_key peer_vpn_ip <<< "$key"
 
