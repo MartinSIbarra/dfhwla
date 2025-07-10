@@ -3,6 +3,28 @@
 ## Pre-requisitos
 La solución funciona con **Vagrant** y **VirtualBox**, por lo que es necesario tenerlos instalados en el sistema. También será necesario **curl** (opcional) para la descarga de los archivos de instalación. Además, para la utilización de la máquina **DevOps** será necesaria una cuenta en **Ngrok**.
 
+### General
+- #### [Instalar VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+- #### [Instalar Vagrant](https://developer.hashicorp.com/vagrant/install)
+
+### Accesorios
+- #### Instalar curl (solo Linux)
+  ```bash
+  sudo apt update && sudo apt install -y curl
+  ```
+
+### DevOps Server
+Para su funcionamiento, el servidor DevOps requiere un token de **ngrok** y un dominio. Ambos se pueden obtener de forma gratuita luego de registrarse.
+
+- #### [Ngrok](https://ngrok.com/)
+
+Ngrok Agent + Nginx Proxy
+Wireguard (VPN) Server on Alpine
+vagrant plugin install vagrant-vbguest
+vagrant up && vagrant reload
+
+
+
 ## Instalación
 El repositorio cuenta con un instalador para **Linux** y **Windows**, para facilitar el proceso de instalación con una interfaz de usuario. Solo para la máquina **DevOps** es necesario realizar un paso intermedio para configurar **ngrok**.
 Copiar y pegar el siguiente comando en la terminal. 

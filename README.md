@@ -1,54 +1,33 @@
-# Free Hosting With Local Architecure
+# Free Hosting With Local Architecture
 
-## Índice
-- [Objetivo](#objetivo)
+El proyecto tiene como objetivo facilitar la creación de servidores para hosting de aplicaciones web utilizando herramientas gratuitas. Utiliza contenedores **Docker** para los servicios que componen el entorno.
+
+#### Índice
+
 - [Arquitectura](#arquitectura)
-- [Pre-requisitos](#pre-requisitos)
 - [Instalación](docs/instalacion.md)
-- [Desarrollo](#desarrollo)
+- [Desarrollo](docs/desarrollo.md)
 
-## Objetivo
-El proyecto tiene como objetivo facilitar la creación de servidores para hosting de aplicaciones web. Utiliza contenedores **Docker** para crear los servicios que componen el entorno.
+### Arquitectura
 
-## Arquitectura
-![Diagrama de arquitecura](docs/assets/architecture-diagram.png)
+![Diagrama de arquitectura](docs/assets/architecture-diagram.png)
 
-### General
-- #### [Instalar VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-- #### [Instalar Vagrant](https://developer.hashicorp.com/vagrant/install)
+#### Componentes:
 
-### Accesorios
-- #### Instalar curl (solo Linux)
-  ```bash
-  sudo apt update && sudo apt install -y curl
-  ```
+- **VPN Server** (*[Wireguard](https://www.wireguard.com/)*)
+  Tiene como objetivo crear una red privada para que tanto el servidor host de la arquitectura ("Server" en la imagen) como los peers utilizados para desarrollar sobre la aplicación web se puedan conectar entre sí.
 
-### DevOps Server
-Para su funcionamiento, el servidor DevOps requiere un token de **ngrok** y un dominio. Ambos se pueden obtener de forma gratuita luego de registrarse.
+######
 
-- #### [Ngrok](https://ngrok.com/)
+- **DDNS Updater** (*[DuckDNS](https://www.duckdns.org/)*)
+  Tiene como objetivo otorgar un dominio "estático" al servidor host de la arquitectura para que pueda ser accedido sin importar si su IP es estática o dinámica. Principalmente utilizado para handshake entre los peers y el **_"VPN Server"_**. Utiliza
 
-## Desarrollo
-El proyecto se basa en obtener los scripts de forma remota desde el repositorio, para realizar pruebas sobre cambios que no se encuentran en la rama "main" se debe usar un parametro extra con el nombre de la rama que se desee utilizar, el siguiente ejemplo aplica a la rama **"feature/nueva"**, para cualquier otra rama se debe modificar el valor de la variable **branch** por el nombre de la rama deseada.
+######
 
-### Linux
-```bash
-branch="feature/nueva"; destino="/ruta/donde/guardar"; curl -o $destino/install.sh https://raw.githubusercontent.com/MartinSIbarra/free-hosting-with-local-architecture/$branch/install.sh && chmod +x $destino/install.sh && $destino/install.sh --branch-name=$branch
-```
+- **Tunnel Server** (*[Ngrok](https://ngrok.com/)*)
+  Tiene como objetivo dar un dominio "estatico" para exponer la aplicacion web en internet.
 
-### Windows (powershell)
-```powershell
-$branch="feature/nueva"; $destino="C:\Ruta\Donde\Guardar"; Invoke-WebRequest -Uri "https://raw.githubusercontent.com/MartinSIbarra/free-hosting-with-local-architecture/$branch/install.ps1" -OutFile "$destino\install.ps1"; & "$destino\install.ps1 --branch-name=$branch"
-```
+######
 
-# Ngrok Agent + Nginx Proxy
-# Wireguard (VPN) Server on Alpine
-
-vagrant plugin install vagrant-vbguest
-
-vagrant up && vagrant reload
-
-[Instalacion](docs/instalacion.md)
-
-# Free Hosting with Local Architecture
-
+- **Proxy** (*[Ngnix](https://nginx.org/)*)
+  Tiene como objetivo poder disponibilzar mas de un entorno de la aplicacion web (producción y uat en la imagen).
