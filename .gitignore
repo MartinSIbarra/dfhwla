@@ -8,6 +8,8 @@
 !images/**
 !nodo/
 !nodo/Vagrantfile
+!docs/
+!docs/**
 !tests/
 !tests/**/
 !tests/**/Makefile
