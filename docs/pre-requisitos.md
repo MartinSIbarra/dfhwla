@@ -10,11 +10,13 @@ El software requerido es necesario para el host del entorno, si se utiliza la so
 ###
 **[Docker](https://www.docker.com/)**
 La solución utiliza docker para la mayoría de sus componentes con lo cual es requerido en el host del entorno.
+
 [Guía de instalación](https://docs.docker.com/engine/install/)
 
 ###
 **[Wireguard](https://www.wireguard.com/)**
 Idealmente el host de la solución se puede conectar a la VPN para poder ser accedido remotamente por los peers y asi facilitar el mantenimiento y configuración del entorno.
+
 [Guía de instalación](https://www.wireguard.com/install/)
 
 **[Curl (recomendado)](https://curl.se/)**
