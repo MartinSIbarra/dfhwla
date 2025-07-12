@@ -8,6 +8,8 @@ user_params = {
     hostname: "", # Nombre del host, si no se completa toma por defecto "nodo"
     ssh_pwd: "", # Contraseña de ssh, si no se completa toma por defecto "vagrant"
     lan_ipv4_addr: "" # Dirección IPv4 de la red local, si no se completa toma por defecto "192.168.0.171"
+    ram_memory: "", # Memoria RAM asignada a la VM, si no se completa toma por defecto "2048"
+    cpus: "" # Cantidad de CPUs asignadas a la VM, por defecto 2
 }
 
 # Variable utilizada para indicar si es necesario reiniciar la máquina virtual tras instalar el plugin vagrant-vbguest
@@ -72,8 +74,8 @@ Vagrant.configure("2") do |config|
         config.vbguest.auto_reboot = true       # Reinicia la VM si es necesario tras instalar GA
 
         config.vm.provider "virtualbox" do |vb|
-            vb.memory = "2048"
-            vb.cpus = 2
+            vb.memory = params[:ram_memory]
+            vb.cpus = params[:cpus]
             vb.name = params[:hostname]
 
             # Configuraciones para mejorar el manejo de UDP en modo bridge (public_network)
@@ -184,6 +186,8 @@ def initialize_params_if_empty(params)
     params[:hostname] = "nodo" if params[:hostname].empty?
     params[:ssh_pwd] = "vagrant" if params[:ssh_pwd].empty?
     params[:lan_ipv4_addr] = "192.168.0.171" if params[:lan_ipv4_addr].empty?
+    params[:ram_memory] = "2048" if params[:ram_memory].empty?
+    params[:cpus] = 2 if params[:cpus].nil? || params[:cpus].empty?
     return params
 end
 
