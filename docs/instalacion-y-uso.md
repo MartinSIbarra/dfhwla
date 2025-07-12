@@ -49,7 +49,7 @@ Para la instalación del nodo, una vez instalados los [pre-requisitos](pre-requi
     user_params = {
         hostname: "", # Nombre del host, si no se completa toma por defecto "nodo"
         ssh_pwd: "", # Contraseña de ssh, si no se completa toma por defecto "vagrant"
-        lan_ipv4_addr: "" # Dirección IPv4 de la red local, si no se completa toma por defecto "192.168.0.171"
+        lan_ipv4_addr: "", # Dirección IPv4 de la red local, si no se completa toma por defecto "192.168.0.171"
         ram_memory: "", # Memoria RAM asignada a la VM, si no se completa toma por defecto "2048"
         cpus: "" # Cantidad de CPUs asignadas a la VM, por defecto 2
     }
