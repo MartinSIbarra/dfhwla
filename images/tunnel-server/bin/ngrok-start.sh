@@ -2,7 +2,7 @@
 set -o pipefail
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 
 log_file="$LOG_PATH/ngrok.log"
 
@@ -22,9 +22,9 @@ log "ngrok_auth_token: $ngrok_auth_token"
 log "ngrok_tunnel_url: $ngrok_tunnel_url"
 log "ngrok_tunnel_port: $ngrok_tunnel_port"
 log "ngrok_log_file: $log_file"
-[ "$TEST" != "true" ] \
+[ "$ENVIRONMENT" == "container" ] \
     && rm -f "$log_file" \
-    && ngrok http $ngrok_tunnel_port --url=$ngrok_tunnel_url --authtoken=$ngrok_auth_token --log=$log_file
+    && ngrok http proxy-server:$ngrok_tunnel_port --url=$ngrok_tunnel_url --authtoken=$ngrok_auth_token --log=$log_file
 log "Ngrok tunnel started."
 
 chown "1000":"1000" "$log_file"

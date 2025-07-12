@@ -2,12 +2,16 @@
 set -o 'pipefail'
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 
-vpnkeys_list_file="$CONFIG_PATH/vpnkeys.list"
-vpn_interface="$CONFIG_PATH/server.conf"
+vpn_config_path="$CONFIG_PATH/vpn"
+vpnkeys_list_file="$vpn_config_path/vpnkeys.list"
+vpn_interface="$vpn_config_path/server.conf"
 
-wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
+mkdir -p "$vpn_config_path"
+chown "1000:1000" "$vpn_config_path"
+
+[[ "$ENVIRONMENT" == "container" ]] && wg-quick down "$vpn_interface" > /dev/null 2>&1 || true
 
 # Se obtienen los parametros del archivo de configuracion
 log "Loading parameters from $PARAMS_FILE..."
@@ -29,18 +33,29 @@ fi
 keys=()
 generate_vpnkey_list() {
     local from=$1
-    local peers=$2
+    local peers_quantity=$2
     local file=$3
     local ivp4_mask=$4
-    for i in $(seq $from $peers); do
+    local last_ipv4_value=0
+    for i in $(seq $from $peers_quantity); do
+        if ([[ "$i" -eq 1 ]] || [[ "$i" -eq 2 ]]); then
+            # Para los primeros dos peers, se asigna un valor especial, 101 y 102
+            # 101 sera la direccion del servidor de vpn
+            # 102 sera la direccion del host donde se ejecuta el servidor de vpn
+            last_ipv4_value=$((i + 100))
+        else
+            # Para los siguientes peers, se asigna un valor secuencial a partir de 1
+            last_ipv4_value=$((i - 2))
+        fi
         private_key=$(wg genkey) 
         public_key=$(echo "$private_key" | wg pubkey)
-        key="$private_key,$public_key,$ivp4_mask.$i"
+        key="$private_key,$public_key,$ivp4_mask.$last_ipv4_value"
         echo "$key" | tee -a "$file" > /dev/null 2>&1
         keys+=("$key")
     done
 }
 
+vpn_peers_quantity=$((vpn_peers_quantity + 2)) # Se suman 2 peers para incluir el servidor y el host del servidor
 # Verifica si el archivo de claves para la vpn existe y tiene contenido, si no existe lo crea y lo carga sino agrega las claves nuevas
 if [ ! -s "$vpnkeys_list_file" ]; then
     rm -f "$vpnkeys_list_file"
@@ -59,10 +74,11 @@ else
         log "Required peers quantity ($vpn_peers_quantity) already reached with $cant_vpnkeys keys."
     else
         generate_vpnkey_list "$start" "$vpn_peers_quantity" "$vpnkeys_list_file" "$vpn_ipv4_mask"
+        chown -R "1000:1000" "$vpnkeys_list_file"
     fi
 fi
 
-rm -f "$CONFIG_PATH"/*.conf
+rm -f "$vpn_config_path"/*.conf
 
 # Toma la primera clave de la lista para el servidor y la elimina de la lista
 key="${keys[0]}"
@@ -75,11 +91,19 @@ while IFS= read -r line; do
     line="${line//<vpn_port>/$vpn_port}"
     line="${line//<server_private_key>/$server_private_key}"
     echo "$line" | tee -a "$vpn_interface" > /dev/null 2>&1
+
+    chown -R "1000:1000" "$vpn_interface"
 done < "$TEMPLATES_PATH/server-server-part.conf"
 
-i=1
+i=0
 for key in "${keys[@]}"; do
-    touch "$CONFIG_PATH/peer$i.conf"
+    if [[ "$i" -eq 0 ]]; then
+        # El primer peer se configura como el host del servidor
+        vpn_peer_config_file="$vpn_config_path/host.conf"  
+    else
+        vpn_peer_config_file="$vpn_config_path/peer$i.conf"
+    fi
+    touch "$vpn_peer_config_file"
     IFS=',' read -r peer_private_key peer_public_key peer_vpn_ip <<< "$key"
 
     # Crea el archivo de configuracion del peer 
@@ -93,7 +117,7 @@ for key in "${keys[@]}"; do
         line="${line//<allowed_ips_ipv4>/$ipv4_with_cidr}"
         ipv6_with_cidr="$vpn_ipv6_net/64"
         line="${line//<allowed_ips_ipv6>/$ipv6_with_cidr}"
-        echo "$line" | tee -a "$CONFIG_PATH/peer$i.conf" > /dev/null 2>&1
+        echo "$line" | tee -a "$vpn_peer_config_file" > /dev/null 2>&1
     done < "$TEMPLATES_PATH/peer.conf"
 
     # Agrega la parte del peer al archivo de configuracion del servidor
@@ -104,9 +128,11 @@ for key in "${keys[@]}"; do
         echo "$line" | tee -a "$vpn_interface" > /dev/null 2>&1
     done < "$TEMPLATES_PATH/server-peer-part.conf"
 
+    chown -R "1000:1000" "$vpn_peer_config_file"
+
     ((i++))
 done
 
-wg-quick up "$vpn_interface"
+[[ "$ENVIRONMENT" == "container" ]] && wg-quick up "$vpn_interface"
 
 log "WireGuard VPN server started successfully."

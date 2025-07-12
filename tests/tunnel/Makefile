@@ -1,31 +1,33 @@
-run-proxy-server-local: \
-	create-prod-net \
-	create-uat-net \
+run-tunnel-server: \
+	create-proxy-net \
+	rm-tunnel-server \
+	do-tunnel-server-run \
+	run-proxy-server 
+
+run-proxy-server: \
+	create-proxy-net \
 	rm-proxy-server \
-	do-proxy-server-run-local \
+	do-proxy-server-run \
+	rm-fake-prod-server \
+	run-fake-prod-server \
+	rm-fake-uat-server \
+	run-fake-uat-server \
 	connect-proxy-prod-net \
 	connect-proxy-uat-net 
 
-run-proxy-server-remote: \
-	create-prod-net \
-	create-uat-net \
-	rm-proxy-server \
-	do-proxy-server-run-remote \
-	connect-proxy-prod-net \
-	connect-proxy-uat-net 
-
-do-proxy-server-run-local: create-proxy-net create-prod-net create-uat-net
+do-tunnel-server-run: create-proxy-net
 	docker run -dit \
-		--name proxy-server \
-		--hostname proxy-server \
+		--name tunnel-server \
+		--hostname tunnel-server \
 		-v ./params:/root/params \
-		-v ./config:/root/config \
 		-v ./logs:/root/logs \
 		--network proxy-net \
-		-p 5000:5000 \
-		proxy-server:alpine
+		tunnel-server:alpine
 
-do-proxy-server-run-remote: create-proxy-net create-prod-net create-uat-net
+rm-tunnel-server: 
+	docker rm -f tunnel-server 2>/dev/null || true
+
+do-proxy-server-run: create-proxy-net create-prod-net create-uat-net
 	docker run -dit \
 		--name proxy-server \
 		--hostname proxy-server \
@@ -43,7 +45,6 @@ run-fake-prod-server: create-prod-net rm-fake-prod-server
 		--name prod-server \
 		--hostname prod-server \
 		--network prod-net \
-		-p 3000:3000 \
 		fake-prod-server:alpine
 
 rm-fake-prod-server:
@@ -54,7 +55,6 @@ run-fake-uat-server: create-uat-net rm-fake-uat-server
 		--name uat-server \
 		--hostname uat-server \
 		--network uat-net \
-		-p 3001:3000 \
 		fake-uat-server:alpine
 
 rm-fake-uat-server:

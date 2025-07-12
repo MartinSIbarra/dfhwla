@@ -2,7 +2,7 @@
 set -o pipefail
 
 # Hace source de las variables de entorno
-[ "$TEST" != "true" ] && source "/usr/local/bin/env.sh" || source "./common/bin/env.sh"
+source "$BIN_PATH/env.sh"
 
 # Se valida el archivo de parametros
 $COMMONS_BIN_PATH/validate_params.sh
@@ -10,12 +10,8 @@ $COMMONS_BIN_PATH/validate_params.sh
 # Ejecuta nginx en segundo plano
 log "Starting nginx server in background..."
 rm -f "/etc/nginx/http.d/ngrok-proxy.conf" 2>/dev/null || true
-rm -f "$CONFIG_PATH/ngrok-proxy.conf" 2>/dev/null || true
+rm -f "$CONFIG_PATH/proxy/ngrok-proxy.conf" 2>/dev/null || true
 nginx -g "daemon off;" &
-
-# Ejecuta el tunnel ngrok en segundo plano
-log "Starting ngrok tunnel..."
-$BIN_PATH/ngrok-start.sh &
 
 # Lanzar un loop para actualizar la config cada X segundos en background
 sleep 5
