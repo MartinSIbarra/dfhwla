@@ -1,4 +1,4 @@
-# :globe_with_meridians: Free Hosting With Local Architecture _ [⬆︎](../README.md)  [⬅︎ ](../README.md)  [➡︎](instalacion.md)
+# :globe_with_meridians: Free Hosting With Local Architecture
 ### :gear: Pre-requisitos
 - [Software](#software)
 - [Configuraciones](#configuraciones)

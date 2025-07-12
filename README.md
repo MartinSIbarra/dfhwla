@@ -1,4 +1,4 @@
-# :globe_with_meridians: Free Hosting With Local Architecture _ [➡︎](docs/pre-requisitos.md)
+# :globe_with_meridians: Free Hosting With Local Architecture
 
 El proyecto tiene como objetivo facilitar un entorno para hosting y desarrollo de aplicaciones web utilizando herramientas gratuitas. Utiliza contenedores **Docker** para los servicios que componen el entorno.
 
