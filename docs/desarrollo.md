@@ -5,4 +5,4 @@
 *Pagina en construcción*
 
 ---
-# [⬆︎](../README.md) [⬅︎](./instalacion.md)
+# [⬆︎](../README.md) [⬅︎](./instalacion-y-uso.md)

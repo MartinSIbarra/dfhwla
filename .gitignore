@@ -10,6 +10,8 @@
 !nodo/Vagrantfile
 !docs/
 !docs/**
+!examples/
+!examples/**
 !tests/
 !tests/**/
 !tests/**/Makefile

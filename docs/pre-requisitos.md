@@ -4,7 +4,7 @@
 
 - [Configuraciones](#configuraciones)
 - [Nodo (opcional)](#nodo-opcional)
-- [Software](#software)
+- [Software (opcional)](#software)
 
 ---
 
