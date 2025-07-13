@@ -1,9 +1,4 @@
-<div style="display: flex; align-items: center; font-weight: bold; font-size: 36px;">
-  <img src="assets/icon.webp" width="40" style="margin-right: 10px;"/>
-  <div>Hosting gratuito con arquitectura local</div>
-</div>
-
----
+# :globe_with_meridians: Hosting gratis con arquitectura local
 
 ### :gear: Pre-requisitos
 
@@ -25,19 +20,19 @@
 
 - **[DuckDNS](https://www.duckdns.org/)**
 
-  Se debe obtener un subdominio de duckdns, el mismo se utilizará para tener una dirección estática para el uso de la VPN.
+  Se debe obtener un subdominio de DuckDNS, el mismo se utilizará para tener una dirección estática para el uso de la VPN.
 
 #####
 
 - **[Port Forwarding](https://www.redeszone.net/tutoriales/configuracion-puertos/abrir-puerto-tcp-udp-router/)**
 
-  Se debe realizar el "forwardeo" de puertos en el router para redirigir el trafico del puerto donde escucha el servidor de **_wireguard_**, por defecto el servidor ya se encuentra configurado para escuchar el puerto 51820, de la misma manera que el "nodo" **_vagrant_** si se usa. El forwardeo de puertos se debe realizar desde el router a la maquina host física donde se ejecuta la solución.
+  Se debe realizar el "forwardeo" de puertos en el router para redirigir el tráfico del puerto donde escucha el servidor de **_WireGuard_**, por defecto el servidor ya se encuentra configurado para escuchar el puerto 51820, de la misma manera que el "nodo" **_Vagrant_** si se usa. El forwardeo de puertos se debe realizar desde el router a la máquina host física donde se ejecuta la solución.
 
 ---
 
 ### Nodo (opcional)
 
-El proyecto incluye un **_Vagrantfile_** configurado para servir de "nodo" donde desplegar la solución, esta maquina virtual se puede utilizar tanto en sistemas operativos Linux como Windows, y aunque no es necesario es recomendable para aislar el entorno de la maquina host física. Así mismo ya viene configurada con las dependencias de software necesarias.
+El proyecto incluye un **_Vagrantfile_** configurado para servir de "nodo" donde desplegar la solución, esta máquina virtual se puede utilizar tanto en sistemas operativos Linux como Windows, y aunque no es necesario es recomendable para aislar el entorno de la máquina host física. Así mismo ya viene configurada con las dependencias de software necesarias.
 
 Para poder utilizar el "nodo" es requerido el siguiente software:
 
@@ -45,29 +40,29 @@ Para poder utilizar el "nodo" es requerido el siguiente software:
 
 #####
 
-- [Vagrant](https://developer.hashicorp.com/vagrant/) es una maquina virtual sin entorno grafico que ejecuta sobre virtual box, tiene la ventaja de se liviana y altamente configurable. [Instalación](https://developer.hashicorp.com/vagrant/install)
+- [Vagrant](https://developer.hashicorp.com/vagrant/) es una máquina virtual sin entorno gráfico que ejecuta sobre VirtualBox, tiene la ventaja de ser liviana y altamente configurable. [Instalación](https://developer.hashicorp.com/vagrant/install)
 
 ---
 
 ### Software
 
-El software requerido es necesario para el host del entorno, si se utiliza la solucion de ["nodo"](#nodo-opcional) ya se encuentran instaladas por defecto las dependencias y no es necesario instalarlas en el host físico.
+El software requerido es necesario para el host del entorno, si se utiliza la solución de ["nodo"](#nodo-opcional) ya se encuentran instaladas por defecto las dependencias y no es necesario instalarlas en el host físico.
 
 - **[Docker](https://www.docker.com/)**
 
-  La solución utiliza docker para la mayoría de sus componentes con lo cual es requerido en el host del entorno. [Instalación](https://docs.docker.com/engine/install/)
+  La solución utiliza Docker para la mayoría de sus componentes, con lo cual es requerido en el host del entorno. [Instalación](https://docs.docker.com/engine/install/)
 
   #####
 
-- **[Wireguard](https://www.wireguard.com/)**
+- **[WireGuard](https://www.wireguard.com/)**
 
-  Idealmente el host de la solución se puede conectar a la VPN para poder ser accedido remotamente por los peers y asi facilitar el mantenimiento y configuración del entorno. [Instalación](https://www.wireguard.com/install/)
+  Idealmente el host de la solución se puede conectar a la VPN para poder ser accedido remotamente por los peers y así facilitar el mantenimiento y configuración del entorno. [Instalación](https://www.wireguard.com/install/)
 
   #####
 
 - **[Curl (recomendado)](https://curl.se/)**
 
-  Se utiliza curl para faciliar la descarga de los archivos de instalacion y componentes del repositorio desde la terminal (aunque también se pueden realizar descargas manuales o clonar el repositorio).
+  Se utiliza Curl para facilitar la descarga de los archivos de instalación y componentes del repositorio desde la terminal (aunque también se pueden realizar descargas manuales o clonar el repositorio).
 
   **_Debian / Ubuntu_**
 
