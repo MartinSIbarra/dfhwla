@@ -11,7 +11,7 @@
 
 Para la instalación del nodo, una vez instalados los [pre-requisitos](pre-requisitos.md), simplemente se debe descargar el archivo Vagrantfile `/nodo/Vagrantfile` en el destino deseado y ejecutar el comando `vagrant up`.
 
-1. **Descarga**
+- **Descarga**
   Utilizando curl (ejecuta el primer `vagrant up`):
 
   ```
@@ -20,26 +20,26 @@ Para la instalación del nodo, una vez instalados los [pre-requisitos](pre-requi
 
 ###
 
-2. **Instalación de plugin para vbguest additions.**
+- **Instalación de plugin para vbguest additions.**
 
   Luego de descargar y realizar el primer `vagrant up` se instalará el plugin para instalar los **_vbguest additions_**, luego de esto es necesario volver a ejecutar `vagrant up` nuevamente para iniciar la máquina virtual.
 
 ###
 
-3. **Instalación de vbguest additions.**
+- **Instalación de vbguest additions.**
 
   Una vez instalado el plugin, al ejecutar `vagrant up` se instalarán los **_vbguest additions_** (a veces son necesarios para el correcto funcionamiento de todas las configuraciones de Vagrant) y también se instalarán las dependencias necesarias para poder desplegar el entorno.
   Es recomendable luego de la instalación de las dependencias y los **_vbguest additions_** reiniciar la máquina virtual, se puede hacer usando `vagrant reload`.
 
 ###
 
-4. **Uso luego de la instalación.**
+- **Uso luego de la instalación.**
 
   Una vez realizados los pasos anteriores quedará operativa e iniciada la máquina vagrant "nodo". Para poder ingresar se debe ejecutar el comando `vagrant ssh`, una vez dentro se puede utilizar como cualquier instalación de Linux, en este caso Ubuntu.
 
 ###
 
-5. **Configuración.**
+- **Configuración.**
 
   El archivo **_Vagrantfile_** contiene una pequeña sección de parámetros, que sirven para customizar el **_nodo_**.
 
@@ -109,11 +109,16 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
 
   ###
 
+- **Ejecutar el entorno.**
   Luego de descargar el archivo de parámetros se deben configurar los parámetros que se quieran personalizar.
+
+  Una vez configurados los parámetros del entorno se debe ejecutar `docker compose up -d` para levantar el entorno.
 
   #####
 
-  **params.json**:
+  **params/params.json**:
+
+  #####
 
   ```JSON
   {
@@ -159,9 +164,6 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
   ```
 
 ###
-
-- **Ejecutar el entorno.**
-  Una vez configurados los parámetros del entorno se debe ejecutar `docker compose up -d` para levantar el entorno.
 
 ---
 
