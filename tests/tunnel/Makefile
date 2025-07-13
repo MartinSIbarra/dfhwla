@@ -8,10 +8,10 @@ run-proxy-server: \
 	create-proxy-net \
 	rm-proxy-server \
 	do-proxy-server-run \
-	rm-fake-prod-server \
-	run-fake-prod-server \
-	rm-fake-uat-server \
-	run-fake-uat-server \
+	rm-fake-prod-app \
+	run-fake-prod-app \
+	rm-fake-uat-app \
+	run-fake-uat-app \
 	connect-proxy-prod-net \
 	connect-proxy-uat-net 
 
@@ -40,25 +40,25 @@ do-proxy-server-run: create-proxy-net create-prod-net create-uat-net
 rm-proxy-server: 
 	docker rm -f proxy-server 2>/dev/null || true
 
-run-fake-prod-server: create-prod-net rm-fake-prod-server
+run-fake-prod-app: create-prod-net rm-fake-prod-app
 	docker run -dit \
-		--name prod-server \
-		--hostname prod-server \
+		--name prod-app \
+		--hostname prod-app \
 		--network prod-net \
-		fake-prod-server:alpine
+		fake-app:alpine
 
-rm-fake-prod-server:
-	docker rm -f prod-server 2>/dev/null || true
+rm-fake-prod-app:
+	docker rm -f prod-app 2>/dev/null || true
 
-run-fake-uat-server: create-uat-net rm-fake-uat-server
+run-fake-uat-app: create-uat-net rm-fake-uat-app
 	docker run -dit \
-		--name uat-server \
-		--hostname uat-server \
+		--name uat-app \
+		--hostname uat-app \
 		--network uat-net \
-		fake-uat-server:alpine
+		fake-app:alpine
 
-rm-fake-uat-server:
-	docker rm -f uat-server 2>/dev/null || true
+rm-fake-uat-app:
+	docker rm -f uat-app 2>/dev/null || true
 
 proxy-run-bash:
 	docker exec -it proxy-server bash

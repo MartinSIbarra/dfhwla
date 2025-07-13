@@ -4,20 +4,17 @@
 	build-vpn-server \
 	build-proxy-server \
 	build-ddns-updater \
-	build-fake-prod-server \
-	build-fake-uat-server \
+	build-fake-app \
 	rm-tunnel-server \
 	rm-vpn-server \
 	rm-proxy-server \
 	rm-ddns-updater \
-	rm-fake-prod-server \
-	rm-fake-uat-server \
+	rm-fake-app \
 	push-tunnel-server \
 	push-vpn-server \
 	push-proxy-server \
 	push-ddns-updater \
-	push-fake-prod-server \
-	push-fake-uat-server 
+	push-fake-app
 
 clean-images:
 	docker rmi -f \
@@ -25,8 +22,7 @@ clean-images:
 		vpn-server:alpine \
 		proxy-server:alpine \
 		ddns-updater:alpine \
-		fake-prod-server:alpine \
-		fake-uat-server:alpine \
+		fake-app:alpine \
 	docker builder prune -f
 
 build-all: \
@@ -34,8 +30,7 @@ build-all: \
 	build-vpn-server \
 	build-proxy-server \
 	build-ddns-updater \
-	build-fake-prod-server \
-	build-fake-uat-server
+	build-fake-app 
 
 build-tunnel-server: rm-tunnel-server
 	./common/helpers/build.sh "tunnel-server" "alpine"
@@ -73,20 +68,12 @@ push-ddns-updater:
 rm-ddns-updater:
 	docker rm -f ddns-updater 2>/dev/null || true
 
-build-fake-prod-server: rm-fake-prod-server
-	./common/helpers/build.sh "fake-prod-server" "alpine"
+build-fake-app: rm-fake-app
+	./common/helpers/build.sh "fake-app" "alpine"
 
-rm-fake-prod-server:
-	docker rm -f fake-prod-server 2>/dev/null || true
+rm-fake-app:
+	docker rm -f fake-app 2>/dev/null || true
 
-push-fake-prod-server:
-	./common/helpers/push.sh "fake-prod-server" "alpine"
+push-fake-app:
+	./common/helpers/push.sh "fake-app" "alpine"
 
-build-fake-uat-server: rm-fake-uat-server
-	./common/helpers/build.sh "fake-uat-server" "alpine"
-
-rm-fake-uat-server:
-	docker rm -f fake-uat-server 2>/dev/null || true
-
-push-fake-uat-server:
-	./common/helpers/push.sh "fake-uat-server" "alpine"

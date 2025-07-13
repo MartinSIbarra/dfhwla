@@ -1,7 +1,7 @@
 services:
 
   ddns:
-    image: ddns-updater:alpine
+    image: bishopplusplus/ddns-updater:alpine
     container_name: ddns-updater
     hostname: ddns-updater
     volumes:
@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
 
   vpn-server:
-    image: vpn-server:alpine
+    image: bishopplusplus/vpn-server:alpine
     container_name: vpn-server
     hostname: vpn-server
     volumes:
@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
 
   tunnel:
-    image: tunnel-server:alpine
+    image: bishopplusplus/tunnel-server:alpine
     container_name: tunnel-server
     hostname: tunnel-server
     volumes:
@@ -38,7 +38,7 @@ services:
     restart: unless-stopped
 
   proxy:
-    image: proxy-server:alpine
+    image: bishopplusplus/proxy-server:alpine
     container_name: proxy-server
     hostname: proxy-server
     volumes:
@@ -52,17 +52,17 @@ services:
     restart: unless-stopped
 
   prod-app:
-    image: fake-prod-server:alpine
-    container_name: prod-server
-    hostname: prod-server
+    image: bishopplusplus/fake-app:alpine
+    container_name: prod-app
+    hostname: prod-app
     networks:
       - prod-net
     restart: unless-stopped
 
   uat-app:
-    image: fake-uat-server:alpine
-    container_name: uat-server
-    hostname: uat-server
+    image: bishopplusplus/fake-app:alpine
+    container_name: uat-app
+    hostname: uat-app
     networks:
       - uat-net
     restart: unless-stopped
@@ -77,4 +77,3 @@ networks:
   uat-net:
     name: uat-net
     driver: bridge
-

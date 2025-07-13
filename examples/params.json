@@ -23,13 +23,13 @@
         "apps": [
             {
                 "url_path": "prod",
-                "name": "prod-server",
+                "name": "prod-app", //Nombre de la aplicacion web de producción.
                 "port": 3000 // Puerto en el cual escucha la aplicacion web de producción.
             },
             {
                 "url_path": "uat",
-                "name": "uat-server",
-                "port": 3000 // Puerto en el cual escucha la aplicacion web de producción.
+                "name": "uat-app", //Nombre de la aplicacion web de pruebas.
+                "port": 3000 // Puerto en el cual escucha la aplicacion web de pruebas.
             }
         ]
     },
