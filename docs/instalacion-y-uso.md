@@ -1,4 +1,9 @@
-# :globe_with_meridians: Free Hosting With Local Architecture
+<div style="display: flex; align-items: center; font-weight: bold; font-size: 36px;">
+  <img src="assets/icon.webp" width="40" style="margin-right: 10px;"/>
+  <div>Hosting gratuito con arquitectura local</div>
+</div>
+
+---
 
 ### :rocket: Instalación y uso
 
@@ -96,6 +101,7 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
 ###
 
 - **Descargar y modificar el archivo parametros.**
+  
   En el path donde se descargo el archivo `docker-compose.yml` se debe crear una carpeta llamada `params` y dentro se debe descargar el archivo `/examples/params.json` en el path deseado.
 
   ###
@@ -140,13 +146,13 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
           "apps": [
               {
                   "url_path": "prod",
-                  "name": "prod-server",
+                  "name": "prod-app", //Nombre de la aplicacion web de producción.
                   "port": 3000 // Puerto en el cual escucha la aplicacion web de producción.
               },
               {
                   "url_path": "uat",
-                  "name": "uat-server",
-                  "port": 3000 // Puerto en el cual escucha la aplicacion web de producción.
+                  "name": "uat-app", //Nombre de la aplicacion web de pruebas.
+                  "port": 3000 // Puerto en el cual escucha la aplicacion web de pruebas.
               }
           ]
       },
@@ -156,10 +162,11 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
       }
   }
   ```
+
 ###
 
 - **Ejecutar el entorno.**
-  Una vez configurados los parametros del entorno se puede ejecutar el mismo con el comando `docker compose up -d`.
+  Una vez configurados los parametros del entorno se debe ejecutrar `docker compose up -d` para levantar el entorno.
 
 ---
 

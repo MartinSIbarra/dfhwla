@@ -1,4 +1,9 @@
-# :globe_with_meridians: Free Hosting With Local Architecture
+<div style="display: flex; align-items: center; font-weight: bold; font-size: 36px;">
+  <img src="docs/assets/icon.webp" alt="Descripción" width="40" style="margin-right: 10px;"/>
+  <div>Hosting gratuito con arquitectura local</div>
+</div>
+
+---
 
 ### :scroll: Vista General
 

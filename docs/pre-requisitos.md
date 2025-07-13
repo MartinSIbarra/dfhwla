@@ -1,4 +1,9 @@
-# :globe_with_meridians: Free Hosting With Local Architecture
+<div style="display: flex; align-items: center; font-weight: bold; font-size: 36px;">
+  <img src="assets/icon.webp" width="40" style="margin-right: 10px;"/>
+  <div>Hosting gratuito con arquitectura local</div>
+</div>
+
+---
 
 ### :gear: Pre-requisitos
 
