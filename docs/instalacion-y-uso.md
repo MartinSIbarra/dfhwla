@@ -109,14 +109,7 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
 
   ###
 
-- **Ejecutar el entorno.**
-  Luego de descargar el archivo de parámetros se deben configurar los parámetros que se quieran personalizar.
-
-  Una vez configurados los parámetros del entorno se debe ejecutar `docker compose up -d` para levantar el entorno.
-
-  #####
-
-  **params/params.json**:
+  ***params/params.json**:*
 
   #####
 
@@ -163,7 +156,41 @@ Para instalar y configurar el entorno es necesario realizar los siguientes pasos
   }
   ```
 
-###
+  ###
+
+- **Ejecutar el entorno.**
+
+  Luego de descargar el archivo de parámetros se deben configurar los parámetros que se quieran personalizar.
+
+  Una vez configurados los parámetros del entorno se debe ejecutar `docker compose up -d` para levantar el entorno. Una vez corriendo el entorno si no se detiene con `docker compose down` se reinciará cada vez que se reinicie la maquina host.
+
+  ###
+
+- **Configurar VPN.**
+
+  Luego de lanzar el entorno, este ofrece un servidor de VPN. La idea es poder conectar el host del entorno a la VPN, para que este pueda ser accedido por los peers de la VPN para realizar las configuraciones o el mantenimiento necesario.
+
+  Para esto, es ideal configurar **systemctl** para lanzar un servicio que se ejecute y se conecte a la VPN incluso cuando se reinicia el host.
+
+  Para este objetivo, realiza los siguientes pasos:
+
+  #####
+
+  - En el path donde se encuentra el **docker-compose.yml**:
+    ```bash
+    sudo cp config/vpn/host.conf /etc/wireguard/
+    ```
+    Este comando copia el archivo de configuración creado por el componente **vpn-server** al path donde se encuentran las configuraciones de WireGuard.
+
+    #####
+
+  - Luego, ejecuta el siguiente comando:
+    ```bash
+    sudo systemctl enable wg-quick@host && sudo systemctl start wg-quick@host
+    ```
+    Este comando habilitará y disparará la ejecucion del servicio de WireGuard para conectarse con el servidor de VPN que provee el entorno. De esta manera, cualquier otro peer conectado a la VPN podrá acceder vía SSH al host del entorno. Luego cada vez que se reinicie la maquina host, el servicio realizará la conexión de forma automática.
+
+  ###
 
 ---
 
