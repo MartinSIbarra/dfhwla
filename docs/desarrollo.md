@@ -4,7 +4,7 @@
 
 ---
 
-_Pagina en construcción_
+_Página en construcción_
 
 ---
 
